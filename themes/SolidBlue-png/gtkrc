@@ -1,0 +1,138 @@
+
+#style "fix-librpng-engine-with-pixmap-engine"
+#{ engine "pixmap" {} }
+
+style "SolidBlue" {
+
+    font_name = "Sans 8"
+    
+    fg[NORMAL] = "#fff"
+    fg[PRELIGHT] = "#fff"
+    fg[ACTIVE] = "#fff"
+    
+    text[NORMAL] = "#fff"
+    text[PRELIGHT] = "#fff"
+    text[ACTIVE] = "#fff"
+    
+    bg[NORMAL] = "#416cbd"
+    
+    
+    engine "pixmap" {
+    
+        image {
+            function = FLAT_BOX
+            file = "background-popup.png"
+            stretch = TRUE
+            border = { 3, 3, 3, 3 }
+        }
+    
+        image { 
+            function = BOX
+            file = "button-normal.png"
+            border = { 2,2,2,2 }
+            stretch = TRUE
+            state = NORMAL
+            recolorable = TRUE
+        }
+        
+        image {
+            function = BOX
+            file = "button-prelight.png"
+            border = { 2,2,2,2 }
+            stretch = TRUE
+            state = PRELIGHT
+            recolorable = TRUE
+        }
+        
+        image {
+            function = BOX
+            file = "button-active.png"
+            border = { 2,2,2,2 }
+            stretch = TRUE
+            recolorable = TRUE
+            state = ACTIVE
+        }
+        
+        ## SEPARATORS
+        image {
+            function = VLINE
+            file = "vseparator.png"
+            border = { 1,0,0,0 }
+            stretch = TRUE
+        }
+        
+        image {
+            function = HLINE
+            file = "hseparator.png"
+            border = { 0,0,0,1 }
+            stretch = TRUE
+        }
+        
+    }
+    
+
+}
+widget "*" style "SolidBlue"
+
+
+style "Panel" {
+    engine "pixmap" {
+        image {
+            function = FLAT_BOX
+            file = "panel-background.png"
+            stretch = TRUE
+        }
+    }
+}
+widget "FoopanelWindow" style "Panel"
+
+style "panel-button" {
+    engine "pixmap" {
+        image { 
+            function = BOX
+            file = "spacer.png"
+            stretch = TRUE
+            state = NORMAL
+            recolorable = TRUE
+        }
+    }
+}
+widget_class "FoopanelWindow.*.Button" style "panel-button"
+
+
+
+style "EdgeButton" {
+
+    GtkButton::focus-line-width = 0
+
+    engine "pixmap" {
+    
+        image {
+            function        = BOX
+            recolorable     = TRUE
+        	file            = "spacer.png"
+        	stretch         = TRUE   
+        	state           = NORMAL
+        }
+
+        image {
+            function        = BOX
+            recolorable     = TRUE
+        	file            = "edgebutton-prelight.png"
+        	stretch         = TRUE   
+        	state           = PRELIGHT
+        }
+
+        image {
+            function        = BOX
+            recolorable     = TRUE
+        	file            = "edgebutton-active.png"
+        	stretch         = TRUE   
+        	state           = ACTIVE
+        }
+
+    }
+
+}
+widget "FoopanelWindow.*.EdgeButton" style "EdgeButton"
+

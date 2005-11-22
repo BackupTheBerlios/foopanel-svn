@@ -1,0 +1,113 @@
+
+
+import gtk, gobject
+import pango
+
+
+class ScrollingLabel(gtk.Label):
+
+    #__gsignals__ = { 'expose_event': 'override' }
+    
+    _curr_x = 0
+    _scrolling = True
+    _to_scroll = False
+
+
+    def __init__(self, string = None, speed = 0.1):
+    
+        gtk.Label.__init__(self, "")
+        
+        self._layout = self.get_layout()
+        
+        self.set_text(string)
+        
+        gobject.timeout_add(int(10 / speed), self.draw)
+
+    
+    
+    def start_scrolling(self):
+    
+        self._scrolling = True
+        self.draw()
+    
+    
+    def stop_scrolling(self):
+    
+        self._scrolling = False
+        self.draw()
+        
+    
+    
+    def set_markup(self, markup):
+    
+        self.set_text(markup)
+    
+    
+    def set_label(self, label):
+    
+        self.set_text(label)
+    
+    
+    def set_text(self, label):
+        
+        l = self._layout
+        l.set_markup(label)
+        
+        w, h = l.get_pixel_size()
+        
+        rx, ry, rw, rh = self.allocation
+        
+        self._rect = gtk.gdk.Rectangle(rx, ry, rw, rh)
+        
+        if w > rw:
+        
+            self._to_scroll = True
+        
+        else:
+        
+            self._to_scroll = False
+        
+        
+        
+        
+        
+    def draw(self):
+        
+        l = self._layout
+        
+        #l2 = self._layout2
+        
+        #l.set_text(l.get_text()[1:]+l.get_text()[:-1])
+        
+        w, h = l.get_pixel_size()
+        
+        rx, ry, rw, rh = self.allocation
+        self.window.clear_area(rx, ry, rw, rh)
+
+        if self._to_scroll and self._scrolling:
+            
+            self._curr_x = self._curr_x - 1
+            x = rx + self._curr_x
+            y = ry + int((rh - h) / 2) - 1
+            style = self.get_style()
+            style.paint_layout(self.window, self.state, False, self._rect, \
+                               self, "", x, y, l)
+        
+        else:
+        
+            x = rx + int((rw - w) / 2)
+            y = ry + int((rh - h) / 2)
+            style = self.get_style()
+            style.paint_layout(self.window, self.state, False, self._rect, \
+                               self, "", x, y, l)
+                
+        return True
+        
+        
+        
+    def do_expose_event(self, event):
+    
+        #self.draw()
+        self.chain(event)
+        
+        

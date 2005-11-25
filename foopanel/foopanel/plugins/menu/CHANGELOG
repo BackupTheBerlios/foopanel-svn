@@ -1,0 +1,11 @@
++-------------------------------+
+| MENU plugin for Foopanel      |
+| CHANGELOG                     |
++-------------------------------+
+
+2005-11-25:
+ - Now the menu is inserted in a scrolledwindow, so that it won't be higher than
+   the screen
+
+2005-11-22: 
+ - First SVN & development release, just working

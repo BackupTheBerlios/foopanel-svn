@@ -45,22 +45,24 @@ import os, re
 
 class FoopanelMenuWindow(abstract.PopupWindow):
 
+    __is_size_set = False
+
     def __init__(self, name, description, icon):
     
         abstract.PopupWindow.__init__(self)
         
         self.set_header(name, description, icon)
         
-        scroll = gtk.ScrolledWindow()
-        scroll.set_policy(gtk.POLICY_AUTOMATIC, gtk.POLICY_AUTOMATIC)
-        scroll.set_shadow_type(gtk.SHADOW_NONE)
-        scroll.show()
-        #box.pack_start(scroll, True, True)
+        self.scroll = gtk.ScrolledWindow()
+        self.scroll.set_policy(gtk.POLICY_NEVER, gtk.POLICY_AUTOMATIC)
+        self.scroll.set_shadow_type(gtk.SHADOW_NONE)
+        self.scroll.show()
+        self.add(self.scroll, True)
 
         self.buttons = gtk.VBox(True, 0)
         self.buttons.show()
-        #scroll.add_with_viewport(self.buttons)
-        self.add(self.buttons, True)
+        self.scroll.add_with_viewport(self.buttons)
+        #self.add(self.buttons, True)
         
 
     def append(self, obj):
@@ -68,6 +70,16 @@ class FoopanelMenuWindow(abstract.PopupWindow):
         self.buttons.add(obj)
         obj.show()
         
+        
+    def toggle(self, widget):
+    
+        if not self.__is_size_set:
+            w, h = self.buttons.size_request()
+            self.scroll.set_size_request(w, \
+                        min(h + 5, gtk.gdk.screen_height() - config.height - 200))
+            self.__is_size_set = True
+        
+        abstract.PopupWindow.toggle(self, widget)
    
        
 
@@ -180,7 +192,8 @@ class menu(gtk.ToggleButton):
                     continue
                 ib.connect("button-release-event", self.cb_clicked)
             self.items.append(ib)
-            
+
+         
         
     def cb_clicked(self, entry, event):
         

@@ -1,0 +1,12 @@
++-------------------------------+
+| MENU plugin for Foopanel      |
+| README                        |
++-------------------------------+
+
+This plugin provides an panel menu built from Freedesktop.org's ".desktop" 
+entries: it is similar to the Xfce panel, as you have a button for each
+category, but it is build dinamically like the Gnome menu (of which it shares
+the settings, so you can edit this menu with a menu-editor for Gnome).
+
+It requires PyXDG (http://freedesktop.org/wiki/Software_2fpyxdg),
+in addiction to Foopanel requirements.

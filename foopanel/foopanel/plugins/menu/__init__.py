@@ -79,6 +79,8 @@ class FoopanelMenuWindow(abstract.PopupWindow):
                         min(h + 5, gtk.gdk.screen_height() - config.height - 200))
             self.__is_size_set = True
         
+        self.scroll.get_vadjustment().set_value(0)
+        
         abstract.PopupWindow.toggle(self, widget)
    
        

@@ -26,7 +26,7 @@
 
 
 name           = "Menu"
-version        = "0.1"
+version        = "0.1.1"
 description    = "Provides an Xfce-panel-like menu built from Freedesktop.org's "\
                  "\".desktop\" entries."
 requires       = {"pyxdg": "xdg"}

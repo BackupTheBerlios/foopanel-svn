@@ -1,4 +1,3 @@
-
 #
 # Foopanel "MENU" plugin
 # 
@@ -134,7 +133,7 @@ class item(gtk.Button):
         
         label = gtk.Label()
         label.show()
-        label.props.xalign = 0
+        label.set_property("xalign", 0)
         label.set_markup("<b>%s</b>\n%s" % (self.info.name, self.info.description))
         cont.pack_start(label, True, True)
         
@@ -311,7 +310,7 @@ class Plugin(abstract.AbstractPlugin):
             
         
         settings = self.get_settings()
-        theme = settings.props.gtk_icon_theme_name
+        theme = settings.get_property("gtk-icon-theme-name")
         if theme:
             xdg.Config.setIconTheme(theme)
         

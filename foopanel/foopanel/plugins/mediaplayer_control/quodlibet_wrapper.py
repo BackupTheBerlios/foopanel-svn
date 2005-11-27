@@ -33,12 +33,12 @@ class ControlsClass:
         '0.14': {
             'next'      : '>',
             'previous'  : '<',
-            'play-pause': '-'
+            'playpause' : '-'
         },
         '0.15': {
             'next'      : 'next',
             'previous'  : 'previous',
-            'play-pause': 'play-pause'
+            'playpause' : 'play-pause'
         }
     }
     
@@ -169,11 +169,11 @@ class Plugin(AbstractPlayerWrapper):
     
     
     def previous(self):
-        self.control("<")
+        self.control(controls.previous)
             
             
     def play_pause(self):
-        self.control("-", True)
+        self.control(controls.playpause, True)
         self.check_paused()
     
             

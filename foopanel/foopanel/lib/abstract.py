@@ -94,7 +94,7 @@ class PopupWindow(gtk.Window):
             txt += "</big>"
             
             lbl.set_markup(txt)
-            lbl.props.xalign = 0
+            lbl.set_property("xalign", 0)
             lbl.show()
             header.add(lbl)
 

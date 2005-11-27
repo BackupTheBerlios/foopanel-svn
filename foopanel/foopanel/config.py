@@ -25,13 +25,13 @@ theme = "SolidBlue-png"
 # without ".py")
 plugins = [ 
             "quickterminal",
-            #"menu", 
+            "menu", 
             "flexible_space", 
             "windowlist",
             "pager",
             "separator",
             #"searchbox", 
-            #"reloader", 
+            "reloader", 
             #"separator", 
             "mediaplayer_control", 
             "separator", 

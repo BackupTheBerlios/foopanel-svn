@@ -184,15 +184,18 @@ class menu(gtk.ToggleButton):
         
         for i in obj.getEntries():
         
+            ib = None
             if isinstance(i, xdg.Menu.Separator):
                 ib = separator()
-            else:
+            elif hasattr(i, "DesktopEntry"):
                 ib = item(i.DesktopEntry)
                 if len(i.DesktopEntry.getOnlyShowIn()) > 0:
                     del(ib)
                     continue
                 ib.connect("button-release-event", self.cb_clicked)
-            self.items.append(ib)
+            
+            if ib:
+                self.items.append(ib)
 
          
         

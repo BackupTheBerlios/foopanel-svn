@@ -22,82 +22,10 @@
 
 
 
-import gtk, gtk.gdk, gobject
+import gtk
 import gettext
 import string
-import config, lib.globals, lib.functions
-import os.path
-
-class PluginManager(gtk.HBox):
-
-
-    def __init__(self):
-
-        gtk.HBox.__init__(self, False, 5)
-
-        self.set_name("PluginManager")
-
-        lib.globals.plugin_manager = self
-
-        for p in config.plugins:
-
-                lib.functions.load_plugin(p)
-                continue
-
-        self.show()
-
-
-        for f in lib.globals.registered_functions['on_finish']:
-
-            f()
-
-
-
-
-
-
-class Gui(gtk.Window):
-
-    def __init__(self):
-
-        gtk.Window.__init__(self)
-
-        self.set_title("Foopanel")
-        self.set_decorated(False)
-        self.set_skip_taskbar_hint(True)
-        self.set_skip_pager_hint(True)
-        self.stick()
-        self.resize(gtk.gdk.screen_width(), config.height)
-        self.reposition()
-        self.set_name("FoopanelWindow")
-        self.set_keep_above(config.ontop)
-        
-        lib.globals.window = self
-        
-        
-
-
-    def reposition(self):
-
-        x = 0
-
-        if config.position == "top":
-            y = 0
-        else:
-            y = gtk.gdk.screen_height() - config.height
-
-        self.move(x, y)
-
-
-    def run(self):
-
-        self.show()
-
-        lib.globals.y = self.get_position()[1]
-        config.height = self.get_size()[1]
-        
-        gtk.main()
-
+import config, lib.core
 
 
 
@@ -113,12 +41,14 @@ def run():
         except:
             print _("Warning: unable to load theme, using default")
 
-    gui = Gui()
+    gui = lib.core.Gui()
 
-    plugin_manager = PluginManager()
+    plugin_manager = lib.core.PluginManager()
 
     gui.add(plugin_manager)
-
+    
+    #gui.set_translucent() - Not yet
+        
     gui.run()
 
 

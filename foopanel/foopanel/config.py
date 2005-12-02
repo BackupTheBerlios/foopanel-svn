@@ -1,5 +1,5 @@
 
-# Foopanel 0.0.1 - configuration file
+# Foopanel 0.0.2 - configuration file
 
 # Enable the debug mode, with verbose error reporting
 debug = True
@@ -24,17 +24,18 @@ theme = "SolidBlue-png"
 # Currently available: see in components/ directory (write the file name
 # without ".py")
 plugins = [ 
-            "quickterminal",
-            "menu", 
+            #"quickterminal",
+            #"embedder",
+            #"menu", 
             "flexible_space", 
             "windowlist",
             "pager",
-            "separator",
+            #"separator",
             #"searchbox", 
-            "reloader", 
+            #"reloader", 
             #"separator", 
-            "mediaplayer_control", 
-            "separator", 
+            #"mediaplayer_control", 
+            #"separator", 
             "clock"
           ]
     

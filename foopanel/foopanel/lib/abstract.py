@@ -37,19 +37,69 @@ class AbstractPlugin(gtk.HBox):
         self.show()
             
             
+
+
+
+class FoopanelWindow(gtk.Window):
+
+    def __init__(self, panel = False):
+    
+        if panel:
+            gtkwtype = gtk.WINDOW_TOPLEVEL
+        else:
+            gtkwtype = gtk.WINDOW_POPUP
+            
+        gtk.Window.__init__(self, gtkwtype)
+        
+        self.set_decorated(False)
+        self.set_skip_taskbar_hint(True)
+        self.set_skip_pager_hint(True)
+        self.stick()
+        
+        self.set_keep_above(config.ontop)
+    
+    
+    #
+    # I haven't found a way to do this
+    # Just waiting for GTK to support XComposite
+    #
+    #def set_translucent(self):
+    #
+    #    iconsdir = 'foopanel/'
+    #    imagename = 'bg.png'
+    #
+    #    path = os.path.join(iconsdir, imagename)
+    #    pixbuf = gtk.gdk.pixbuf_new_from_file(path)
+    #    #w, h = self.get_size()
+    #    #pixbuf = pixbuf.scale_simple(w, h, gtk.gdk.INTERP_BILINEAR)
+    #    pixmap, mask = pixbuf.render_pixmap_and_mask()
+    #    #del pixbuf
+    #    self.set_app_paintable(True)
+    #    self.realize()
+    #
+    #    #self.shape_combine_mask(mask, 0, 0)  # make it transparent
+    #    self.window.set_child_shapes()
+    #    self.window.set_back_pixmap(pixmap, False)
+    #    #pixbuf.render_to_drawable(self.window, x, 0,0, 0,0, -1,-1)
+    #    del pixmap
+    #    
+    #    #self.modify_bg(gtk.STATE_NORMAL, gtk.gdk.Color( 20000, 30000, 40000))
+    #    
+        
+
     
 
 
-class PopupWindow(gtk.Window):
+class PopupWindow(FoopanelWindow):
 
 
-    def __init__(self):
+    def __init__(self, border = 3):
     
-        gtk.Window.__init__(self, gtk.WINDOW_POPUP)
+        FoopanelWindow.__init__(self)
         
         self.set_name("FoopanelPopupWindow")
         
-        self.set_border_width(3)
+        self.set_border_width(border)
         
         self.opener = None
         

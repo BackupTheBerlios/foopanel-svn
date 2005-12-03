@@ -29,7 +29,7 @@ class app:
     version = "0.0.2"
     copyright = "Copyright (C) 2005, Federico Pelloni"
     comments = "A powerful themable and extensible panel for your desktop"
-    license = "GNU Public License version 2 or higher"
+    #license = "GNU Public License version 2 or higher"
     website = "http://foopanel.berlios.de/"
     authors = [ "Federico Pelloni <federico.pelloni@gmail.com>" ]
     artists = [ "Federico Pelloni <federico.pelloni@gmail.com>" ]

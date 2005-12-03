@@ -1,0 +1,31 @@
+
+<!-- The root element: a configuration tree -->
+<config plugin="TestPlugin">
+    <!-- The first section -->
+    <section name="General section">
+        <!-- A boolean setting -->
+        <setting name="BoolS" description="Boolean setting" type="Boolean" default="on" />
+        <!-- A "switch" setting, choose from 3 options -->
+        <setting name="SwitchS" description="Switch setting" type="switch" default="1">
+            <option value="1" text="Option 1" />
+            <option value="2" text="Option 2" />
+            <option value="3" text="Option 3" />
+        </setting>
+        <!-- A group of settings -->
+        <group title="Option group">
+            <!-- A numeric setting -->
+            <setting name="SpinS" description="Number setting" type="number" min="0.00" max="10" default="2.37" />
+            <!-- A text setting -->
+            <setting name="TextS" description="Text setting" type="text" default="Text content" max="30" />
+        </group>
+    </section>
+    <!-- Another section -->
+    <section name="Advanced section">
+        <!-- A radio setting -->
+        <setting name="RadioS" description="Radio setting" type="radio" default="Option C">
+            <option value="Option A" />
+            <option value="Option B" />
+            <option value="Option C" />
+        </setting>    
+    </section>
+</config>

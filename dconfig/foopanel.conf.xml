@@ -1,0 +1,18 @@
+
+<config>
+    <section name="General">
+        <setting type="switch" name="theme" description="Theme" default="1">
+            <option value="SolidBlue-png" />
+            <option value="-" text="None (use default)" />
+        </setting>
+        <setting name="height" description="Panel height" type="Number" min="10" max="200" default="60" />
+        <setting type="radio" name="position" description="Panel position" default="Bottom">
+            <option value="Top" />
+            <option value="Bottom" />
+        </setting>
+        <setting type="boolean" name="ontop" description="Stay over other windows" default="on" />
+    </section>
+    <section name="Advanced">
+        <setting name="debug" description="Enable debug mode" type="Boolean" default="off" />
+    </section>
+</config>

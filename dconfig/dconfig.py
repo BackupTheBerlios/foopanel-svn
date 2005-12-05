@@ -31,6 +31,8 @@ def build(filename, gui):
     from wrapper_gtk import DConfigGuiWrapper
     
     class DConfigEngine(DConfigGuiWrapper):
+        
+        settings = {}
 
         def __init__(self, filename):
         
@@ -52,12 +54,17 @@ def build(filename, gui):
                 
                     if tag == "setting":
                     
-                        self.parse_setting(i, section)
+                        s = self.parse_setting(i, section)
+                        name = i.attrib.get("name", None)
+                        if not name:
+                            continue
+                        self.settings[name] = s
                             
                     elif tag == "group":
                         
                         g = self.parse_group(i, section)
                         
+            print self.settings
         
         
         def parse_setting(self, item, parent):

@@ -17,6 +17,10 @@
             <setting name="SpinS" description="Number setting" type="number" min="0.00" max="10" default="2.37" />
             <!-- A text setting -->
             <setting name="TextS" description="Text setting" type="text" default="Text content" max="30" />
+            <!-- A sub-group -->
+            <group title="Subgroup">
+            	<setting name="Text2" description="Another text setting" type="text" />
+            </group>
         </group>
     </section>
     <!-- Another section -->

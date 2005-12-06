@@ -90,9 +90,9 @@ class wrapper_boolean(SettingWrapper, gtk.CheckButton):
             self.set_active(False)
         
     def get(self):
-        return self.widget.get_active()
+        return self.get_active()
     def set(self, value):
-        self.widget.set_active(bool(value))
+        self.set_active(bool(value))
 
 class wrapper_number(SettingWrapper, LabelledControl):
     
@@ -140,9 +140,9 @@ class wrapper_switch(SettingWrapper, LabelledControl):
             self.combo.set_active(int(default)-1)
 
     def get(self):
-        print list(self.model)
+        return list(self.model[self.combo.get_active()])[0]
     def set(self, value):
-        self.model = list(value)
+        self.combo.set_active(int(value))
 
 class wrapper_radio(SettingWrapper, Frame):
     

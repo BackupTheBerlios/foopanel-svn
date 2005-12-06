@@ -24,47 +24,65 @@ import ElementTree
 
 
 
-def build(filename, gui):
+def build(gui, file_definition):
 
-    #exec("from wrapper_%s import DConfigGuiWrapper" % gui)
+    try:
+        exec ("from wrapper_%s import DConfigGuiWrapper" % gui) in globals()
+    except ImportError:
+        print "Wrapper %s not found" % gui
+        raise
     
-    from wrapper_gtk import DConfigGuiWrapper
+    
     
     class DConfigEngine(DConfigGuiWrapper):
         
-        settings = {}
+        __settings = {}
 
-        def __init__(self, filename):
+        def __init__(self, file_definition):
         
             DConfigGuiWrapper.__init__(self)
         
-            self.__filename = filename
+            self.__file_definition = file_definition
             
-            self.xml = ElementTree.parse(filename)
+            #self.__file_storage = file_storage
+            
+            self.xml = ElementTree.parse(file_definition)
             
             root = self.xml.getroot()
             
-            for s in root.findall("section"):
-
-                section = self.new_section(s.attrib["name"])
+            for section in root.findall("section"):
                 
-                for i in s.getchildren():
+                name = section.attrib.get("name", None)
+                if not name:
+                    continue
+                s = self.new_section(str(name))
+                self.__settings[str(name).lower()] = {}
+                self.parse_struct(section, s, self.__settings[str(name).lower()])
+            
+        
+            
+            
+        def parse_struct(self, struct, parent, storage):
+            
+            for child in struct.getchildren():
                 
-                    tag = i.tag.lower()
+                tag = child.tag.lower()
                 
-                    if tag == "setting":
+                if tag == "setting":
                     
-                        s = self.parse_setting(i, section)
-                        name = i.attrib.get("name", None)
-                        if not name:
-                            continue
-                        self.settings[name] = s
+                    s = self.parse_setting(child, parent)
+                    name = child.attrib.get("name", None)
+                    if not name:
+                        continue
+                    storage[name.lower()] = s
                             
-                    elif tag == "group":
+                elif tag == "group":
+                    
+                    group = self.new_group(child.attrib.get("title", None), parent)
+                    
+                    self.parse_struct(child, group, storage)
                         
-                        g = self.parse_group(i, section)
-                        
-            print self.settings
+            
         
         
         def parse_setting(self, item, parent):
@@ -141,26 +159,27 @@ def build(filename, gui):
             if w:    
                 return w
         
-           
-                        
-        def parse_group(self, item, parent):
         
-            g = self.new_group(item.attrib.get("title", None), parent)
-            
-            for i in item.getchildren():
-                
-                tag = i.tag.lower()
-                
-                if tag == "setting":
-                    self.parse_setting(i, g)
-                elif tag == "group":
-                    self.parse_group(i, g)
-                
-            return g
-            
+        def get(self):
+           
+            out = {}
+            for section, settings in self.__settings.iteritems():
+                out[section] = {}
+                print "Section \"%s:\"" % section
+                for setting, widget in settings.iteritems():
+                    value = widget.get()
+                    out[section][setting] = value
+                    print " %s = %s" % (setting, value)
                     
+            return out
+                
+        
+        def set(self, section, setting, value):
+            
+            self.__settings[section][setting].set(value)
+                                    
     
-    return DConfigEngine(filename)
+    return DConfigEngine(file_definition)
 
 
 

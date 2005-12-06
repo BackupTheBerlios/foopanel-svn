@@ -21,22 +21,63 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-FILE = "conf-example.xml"
-#FILE="foopanel.conf.xml"
+DEFINITION = "conf-example.xml"
+#DEFINITION = "foopanel.conf.xml"
+
+STORAGE = "settings.conf"
 
 GUI_WRAPPER="gtk"
 
 import gtk
+import os.path
 import dconfig
 
+# Test window
 w = gtk.Window()
 w.connect("destroy", gtk.main_quit)
 w.set_title("D-Config")
 
-x = dconfig.build(FILE, GUI_WRAPPER)
+# Create a DConfig object
+x = dconfig.build(GUI_WRAPPER, DEFINITION)
+
+# Add it to the window
 x.set_border_width(3)
 w.add(x)
 
+
+# Use it in together with ConfigParser
+from ConfigParser import SafeConfigParser
+
+# Now create a ConfigParser object
+cp = SafeConfigParser()
+# and parse the STORAGE file
+cp.read(STORAGE)
+
+# For each setting in each section try to set the value saved
+for section in cp.sections():
+    for setting, value in cp.items(section):
+        try:
+            x.set(section, setting, value)
+        except:
+            pass
+
+
+# Run the window
 w.show_all()
 gtk.main()
 
+# Get the settings from the GUI
+settings = x.get()
+
+# Update them in the ConfigParser object
+for section, settings in settings.iteritems():
+    if not cp.has_section(section):
+        cp.add_section(str(section))
+    for setting, value in settings.iteritems():
+        cp.set(str(section), str(setting), str(value))
+
+# Finally, save them
+file = open(STORAGE, "w")
+cp.write(file)
+file.close()
+    

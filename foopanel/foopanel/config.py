@@ -1,7 +1,8 @@
 
 storage = "foopanel/config.xml"
 
-from lib import ElementTree, globals
+from lib import globals
+from lib.elementtree import ElementTree
 import os.path
 
 import gtk
@@ -27,11 +28,10 @@ class FooConfig(gtk.Dialog):
             return FooConfig.__getattr__(self, key)
         
         try:
-            item = self.__xml.findall("plugins/plugin")
+            item = self.__xml.findtext("settings/%s" % key)
             if not item:
                 raise AttributeError, "Foopanel configuration has no setting \"%s\"" % key
-            print item
-            return
+            return item
         except:
             raise
         

@@ -72,8 +72,6 @@ class Gui(abstract.FoopanelWindow):
         
         globals.window = self
         
-        globals.configwindow = FooSettings()
-        
 
     def reposition(self):
 
@@ -150,7 +148,7 @@ class FooMenu(gtk.ToggleButton):
             box.add(plugins)
             
             settings = self.button(gtk.STOCK_PREFERENCES)
-            settings.connect("clicked", lambda w: globals.configwindow.run())
+            settings.connect("clicked", lambda w: globals.config.dialog.run())
             box.add(settings)
             
             about = self.button(gtk.STOCK_ABOUT)

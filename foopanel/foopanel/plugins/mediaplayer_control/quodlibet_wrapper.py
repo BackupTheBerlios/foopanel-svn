@@ -155,14 +155,16 @@ class Wrapper(AbstractPlayerWrapper):
                 
     
     def start(self):
-        os.system("quodlibet &")
+        #os.system("quodlibet &")
+        os.spawnlp(os.P_NOWAIT, "quodlibet", "&")
     
             
     # These are the callbacks on user interaction
     
     def focus(self):
-        os.system("quodlibet &")
-        
+        #os.system("quodlibet &")
+        os.spawnlp(os.P_NOWAIT, "quodlibet", "&")
+                
         
     def next(self):
         self.control(controls.next, True)

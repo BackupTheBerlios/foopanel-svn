@@ -2,7 +2,7 @@
 <config>
 	<settings>
 		<debug>False</debug>
-		<height>50</height>
+		<height>60</height>
 		<position>bottom</position>
 		<ontop>True</ontop>
 		<theme>SolidBlue-png</theme>

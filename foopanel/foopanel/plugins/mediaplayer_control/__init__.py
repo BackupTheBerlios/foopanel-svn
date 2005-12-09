@@ -37,7 +37,7 @@ class Plugin(abstract.AbstractPlugin):
         
         self.__settings = settings
 
-        exec("from %s_wrapper import Wrapper" % str(self.__settings["player"]))
+        exec("from %s_wrapper import Wrapper" % str(self.__settings.player))
         w = Wrapper()
         w.show_all()
         

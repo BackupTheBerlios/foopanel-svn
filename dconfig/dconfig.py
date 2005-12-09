@@ -165,11 +165,11 @@ def build(gui, file_definition):
             out = {}
             for section, settings in self.__settings.iteritems():
                 out[section] = {}
-                print "Section \"%s:\"" % section
+                #print "Section \"%s:\"" % section
                 for setting, widget in settings.iteritems():
                     value = widget.get()
                     out[section][setting] = value
-                    print " %s = %s" % (setting, value)
+                #    print " %s = %s" % (setting, value)
                     
             return out
                 

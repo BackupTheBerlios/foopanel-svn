@@ -29,6 +29,8 @@ class SettingWrapper:
     def set(self, value):
         pass
 
+
+
 class LabelledControl(gtk.HBox):
     
     def __init__(self, label):
@@ -38,6 +40,8 @@ class LabelledControl(gtk.HBox):
         lbl = gtk.Label(str(label))
         lbl.set_alignment(0, 0.5)
         self.pack_start(lbl, False, False)
+
+
 
 class Frame(gtk.Frame):
     
@@ -59,6 +63,9 @@ class Frame(gtk.Frame):
         self.box.pack_start(widget, a, b)
 
 
+
+
+
 class wrapper_text(SettingWrapper, LabelledControl):
     
     def __init__(self, description, default, tmax):
@@ -75,6 +82,8 @@ class wrapper_text(SettingWrapper, LabelledControl):
         return self.entry.get_text()
     def set(self, value):
         self.entry.set_text(str(value))
+    
+    
     
 class wrapper_boolean(SettingWrapper, gtk.CheckButton):
     
@@ -93,6 +102,8 @@ class wrapper_boolean(SettingWrapper, gtk.CheckButton):
         return self.get_active()
     def set(self, value):
         self.set_active(bool(value))
+
+
 
 class wrapper_number(SettingWrapper, LabelledControl):
     
@@ -117,6 +128,8 @@ class wrapper_number(SettingWrapper, LabelledControl):
         return self.spin.get_value()
     def set(self, value):
         self.spin.set_value(float(value))
+       
+       
         
 class wrapper_switch(SettingWrapper, LabelledControl):
     
@@ -134,17 +147,26 @@ class wrapper_switch(SettingWrapper, LabelledControl):
         self.add(self.combo)
         
         for o in options:
-            self.model.append(o)
-    
-        if default:
-            self.combo.set_active(int(default)-1)
-
+            iter = self.model.append(o)
+            if o[0] == default:
+                self.combo.set_active_iter(iter)
+            
     def get(self):
         return list(self.model[self.combo.get_active()])[0]
     def set(self, value):
-        self.combo.set_active(int(value))
+        count = 0
+        for row in list(self.model):
+            if row[0] == value:
+                self.combo.set_active(count)
+                break
+            count += 1
+    
+
+
 
 class wrapper_radio(SettingWrapper, Frame):
+    
+    _btns = {}
     
     def __init__(self, description, options, default):
         
@@ -153,12 +175,19 @@ class wrapper_radio(SettingWrapper, Frame):
         b = None
         for o in options:
             b = gtk.RadioButton(b, o)
+            self._btns[o] = b
             if default and default == o:
                 b.set_active(True)
             self.add(b)
     
     def get(self):
-        return 
+        for option, widget in self._btns.iteritems():
+            if widget.get_active():
+                return option
+    
+    def set(self, value):
+        self._btns[str(value)].set_active(True)
+
 
 
 class DConfigGuiWrapper(gtk.Notebook):

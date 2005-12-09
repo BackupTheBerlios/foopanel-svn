@@ -7,9 +7,9 @@
         <setting name="BoolS" description="Boolean setting" type="Boolean" default="on" />
         <!-- A "switch" setting, choose from 3 options -->
         <setting name="SwitchS" description="Switch setting" type="switch" default="1">
-            <option value="1" text="Option 1" />
-            <option value="2" text="Option 2" />
-            <option value="3" text="Option 3" />
+            <option value="First" text="Option 1" />
+            <option value="Second" text="Option 2" />
+            <option value="Third" text="Option 3" />
         </setting>
         <!-- A group of settings -->
         <group title="Option group">

@@ -25,7 +25,6 @@ import gtk, gtk.gdk, gobject
 import os.path
 
 import globals, functions, abstract
-from foopanel import config
 
 
 
@@ -42,9 +41,9 @@ class PluginManager(gtk.HBox):
         
         self.pack_start(FooMenu(), False, False)
 
-        for p in config.plugins:
+        for p in globals.config.plugins:
 
-                functions.load_plugin(p)
+                functions.load_plugin(p[0], p[1])
                 continue
 
         self.show()
@@ -53,6 +52,7 @@ class PluginManager(gtk.HBox):
         for f in globals.registered_functions['on_finish']:
 
             f()
+            
             
 
 
@@ -66,22 +66,23 @@ class Gui(abstract.FoopanelWindow):
 
         self.set_title("Foopanel")
         
-        self.resize(gtk.gdk.screen_width(), config.height)
+        self.resize(int(gtk.gdk.screen_width()), int(globals.config.height))
         self.reposition()
         self.set_name("FoopanelWindow")
         
-        
         globals.window = self
+        
+        globals.configwindow = FooSettings()
         
 
     def reposition(self):
 
         x = 0
 
-        if config.position == "top":
+        if globals.config.position == "top":
             y = 0
         else:
-            y = gtk.gdk.screen_height() - config.height
+            y = gtk.gdk.screen_height() - int(globals.config.height)
 
         self.move(x, y)
 
@@ -91,7 +92,7 @@ class Gui(abstract.FoopanelWindow):
         self.show()
 
         globals.y = self.get_position()[1]
-        config.height = self.get_size()[1]
+        globals.config.height = self.get_size()[1]
         
         gtk.main()
 
@@ -111,6 +112,8 @@ class AboutWindow(gtk.AboutDialog):
 
 
 globals.aboutwindow = AboutWindow()
+globals.tooltips = gtk.Tooltips()
+globals.tooltips.enable()
 
 
 class FooMenu(gtk.ToggleButton):
@@ -147,11 +150,16 @@ class FooMenu(gtk.ToggleButton):
             box.add(plugins)
             
             settings = self.button(gtk.STOCK_PREFERENCES)
+            settings.connect("clicked", lambda w: globals.configwindow.run())
             box.add(settings)
             
             about = self.button(gtk.STOCK_ABOUT)
-            box.add(about)
             about.connect("clicked", lambda w: globals.aboutwindow.run())
+            box.add(about)
+            
+            exit = self.button(gtk.STOCK_QUIT)
+            exit.connect("clicked", gtk.main_quit)
+            box.add(exit)
             
             box.show_all()
         
@@ -161,9 +169,15 @@ class FooMenu(gtk.ToggleButton):
     
         gtk.ToggleButton.__init__(self)
         
+        globals.tooltips.set_tip(self, _("Foopanel menu"))
+        
         self.set_name("EdgeButton")
         
-        arrow = gtk.Arrow(gtk.ARROW_UP, gtk.SHADOW_IN)
+        if globals.config.position == "top":
+            arr_dir = gtk.ARROW_DOWN
+        else:
+            arr_dir = gtk.ARROW_UP
+        arrow = gtk.Arrow(arr_dir, gtk.SHADOW_IN)
         self.add(arrow)
         
         self.menu = self.FooMenuWindow()
@@ -171,5 +185,4 @@ class FooMenu(gtk.ToggleButton):
         
         self.show_all()
 
-           
 

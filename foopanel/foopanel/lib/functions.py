@@ -22,14 +22,13 @@
 
 
 
-from foopanel import config
 import globals
 import sys, os.path
 
 sys.path.append(os.path.realpath('./foopanel/'))
 
 
-def load_plugin(p, reload_module = False, position = -1):
+def load_plugin(p, settings = None, reload_module = False, position = -1):
 
     errmsg = None
         
@@ -53,8 +52,9 @@ def load_plugin(p, reload_module = False, position = -1):
             errmsg = _("It requires packages: %s") % string.join(not_satisfied, ", ")
             raise
         
-        plug = plugin.Plugin()
+        plug = plugin.Plugin(settings)
         plug.show()
+        #plug.build()
         
         expand = getattr(plugin, "expand", False)
         
@@ -79,7 +79,7 @@ def load_plugin(p, reload_module = False, position = -1):
         else:
             s = 'loaded'
         
-        if config.debug:
+        if globals.config.debug:
             print _("Plugin '%s' %s.") % (plugin.name, s)
             
         return True
@@ -91,7 +91,7 @@ def load_plugin(p, reload_module = False, position = -1):
         if errmsg:
             print errmsg
             
-        if config.debug:
+        if globals.config.debug:
             raise
 
 
@@ -106,7 +106,7 @@ def reload_plugin(index):
     
     del(globals.plugins[index])
 
-    return load_plugin(name, module, pos)
+    return load_plugin(name, widget.__settings, module, pos)
 
 
 

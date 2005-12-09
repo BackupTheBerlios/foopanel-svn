@@ -36,8 +36,8 @@ import time
 
 class Plugin(abstract.AbstractPlugin):
 
-    def __init__(self):
-    
+    def __init__(self, settings):
+        
         abstract.AbstractPlugin.__init__(self)
         
         

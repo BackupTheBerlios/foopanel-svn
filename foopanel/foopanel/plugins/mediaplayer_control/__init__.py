@@ -27,10 +27,20 @@ authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 requires = {}
 
 
-# The player to control
-# (file "player_wrapper.py" must exist)
-player = "quodlibet"
+from foopanel.lib import abstract, globals
 
+class Plugin(abstract.AbstractPlugin):
+    
+    def __init__(self, settings):
+        
+        abstract.AbstractPlugin.__init__(self)
+        
+        self.__settings = settings
 
-exec("from %s_wrapper import Plugin" % player)
+        exec("from %s_wrapper import Wrapper" % str(self.__settings["player"]))
+        w = Wrapper()
+        w.show_all()
+        
+        self.add(w)
+
 

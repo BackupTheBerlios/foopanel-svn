@@ -75,10 +75,10 @@ class ContainerWindow(abstract.PopupWindow):
 
 class Plugin(abstract.AbstractPlugin):
 
-    def __init__(self):
-    
-        abstract.AbstractPlugin.__init__(self)
+    def __init__(self, settings):
         
+        abstract.AbstractPlugin.__init__(self)
+    
         self._window = ContainerWindow()
         
         btn = gtk.ToggleButton("M-bed")

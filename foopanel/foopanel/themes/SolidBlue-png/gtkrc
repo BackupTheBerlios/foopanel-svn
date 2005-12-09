@@ -9,12 +9,22 @@ style "SolidBlue" {
     fg[NORMAL] = "#fff"
     fg[PRELIGHT] = "#fff"
     fg[ACTIVE] = "#fff"
+    fg[INSENSITIVE] = "#fff"
     
     text[NORMAL] = "#fff"
     text[PRELIGHT] = "#fff"
     text[ACTIVE] = "#fff"
+    text[INSENSITIVE] = "#fff"
     
     bg[NORMAL] = "#416cbd"
+    bg[PRELIGHT] = "#416cbd"
+    bg[ACTIVE] = "#416cbd"
+    bg[INSENSITIVE] = "#416cbd"
+    
+    base[NORMAL] = "#416cbd"
+    base[PRELIGHT] = "#416cbd"
+    base[ACTIVE] = "#416cbd"
+    base[INSENSITIVE] = "#416cbd"
     
     
     engine "pixmap" {
@@ -72,7 +82,7 @@ style "SolidBlue" {
     
 
 }
-widget "*" style "SolidBlue"
+widget "Foopanel*" style "SolidBlue"
 
 
 style "Panel" {

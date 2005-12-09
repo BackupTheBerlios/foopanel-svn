@@ -56,7 +56,7 @@ import re
 
 expr = re.compile("^~?#?(\w+)=(.+)$", re.M)
 
-class Plugin(AbstractPlayerWrapper):
+class Wrapper(AbstractPlayerWrapper):
 
 
     _is_running = False

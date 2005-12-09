@@ -35,10 +35,10 @@ import time
 
 class Plugin(abstract.AbstractPlugin):
 
-    def __init__(self):
-    
-        abstract.AbstractPlugin.__init__(self)
+    def __init__(self, settings):
         
+        abstract.AbstractPlugin.__init__(self)
+    
         self.set_border_width(5)
         
         box = gtk.VBox(False, 0)

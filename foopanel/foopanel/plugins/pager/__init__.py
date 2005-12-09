@@ -29,15 +29,14 @@ requires = {"gnome-python-extras": "wnck"}
 expand = False
 
 
-from foopanel.lib import abstract
-from foopanel import config
+from foopanel.lib import abstract, globals
 import gtk, gtk.gdk
 import wnck
 
 
 class Plugin(abstract.AbstractPlugin):
 
-    def __init__(self):
+    def __init__(self, settings):
     
         abstract.AbstractPlugin.__init__(self)
         
@@ -52,7 +51,7 @@ class Plugin(abstract.AbstractPlugin):
         
         rect = gtk.gdk.Rectangle(0, 0, 10, 25)
         tb.size_allocate(rect)
-        tb.set_n_rows(int(config.height // 25))
+        tb.set_n_rows(int(int(globals.config.height) // 25))
 
         al = gtk.Alignment(0.5, 0.5, 0, 0)
         self.add(al)

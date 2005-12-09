@@ -25,19 +25,20 @@
 import gtk
 import gettext
 import string
-import config, lib.core
-
+import config, lib.core, lib.globals
 
 
 def run():
 
     gettext.install("foopanel")
+    
+    lib.globals.config = config.FooConfig()
 
-    if config.theme:
-        if config.debug:
-            print _("Using theme %s") % config.theme
+    if lib.globals.config.theme:
+        if lib.globals.config.debug:
+            print _("Using theme %s") % lib.globals.config.theme
         try:
-            gtk.rc_parse("foopanel/themes/%s/gtkrc" % config.theme)
+            gtk.rc_parse("foopanel/themes/%s/gtkrc" % lib.globals.config.theme)
         except:
             print _("Warning: unable to load theme, using default")
 

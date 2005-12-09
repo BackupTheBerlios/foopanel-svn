@@ -20,8 +20,8 @@
 #
 
 
-# TODO:
-# - implement an optional FAM monitor to watch changes to menu
+# TODO: 
+#  - implement an optional FAM monitor to watch changes to menu
 
 
 
@@ -33,7 +33,6 @@ requires       = {"pyxdg": "xdg"}
 authors        = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 
 
-from foopanel import config
 from foopanel.lib import abstract, globals
 import xdg.Menu, xdg.IconTheme
 import gtk, gtk.gdk
@@ -75,7 +74,7 @@ class FoopanelMenuWindow(abstract.PopupWindow):
         if not self.__is_size_set:
             w, h = self.buttons.size_request()
             self.scroll.set_size_request(w, \
-                        min(h + 5, gtk.gdk.screen_height() - config.height - 200))
+                        min(h + 5, gtk.gdk.screen_height() - int(globals.config.height) - 200))
             self.__is_size_set = True
         
         self.scroll.get_vadjustment().set_value(0)
@@ -249,7 +248,7 @@ class menu(gtk.ToggleButton):
         
                 
         
-        if config.debug:
+        if bool(globals.config.debug):
             print _("Foopanel menu: launching %s (%s)") % \
                     (entry.info.name, cmd)
 
@@ -282,8 +281,8 @@ class menu(gtk.ToggleButton):
 
 class Plugin(abstract.AbstractPlugin):
 
-    def __init__(self):
-    
+    def __init__(self, settings):
+        
         global tips
     
         abstract.AbstractPlugin.__init__(self)
@@ -304,7 +303,7 @@ class Plugin(abstract.AbstractPlugin):
         pangolayout = self.description.get_layout()
         d_width = 0
         
-        if config.position == "top":
+        if str(globals.config.position) == "top":
             box.pack_start(self.description, False, False)
             box.pack_start(al1, True, True)
         else:

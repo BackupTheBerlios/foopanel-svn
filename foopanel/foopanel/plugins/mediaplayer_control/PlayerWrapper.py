@@ -20,7 +20,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-from foopanel.lib import abstract, globals
+from foopanel.lib import globals
 from foopanel import config
 import widgets
 import gtk, gtk.gdk, gobject
@@ -28,7 +28,7 @@ import os.path
 
 
 
-class AbstractPlayerWrapper(abstract.AbstractPlugin):
+class AbstractPlayerWrapper(gtk.HBox):
 
 
     __paused = False
@@ -36,12 +36,13 @@ class AbstractPlayerWrapper(abstract.AbstractPlugin):
 
     def __init__(self):
         
-        abstract.AbstractPlugin.__init__(self)
+        gtk.HBox.__init__(self, False, 3)
         
-        self.set_size_request(config.height + 100, 0)
+        self.set_size_request(int(globals.config.height) + 100, 0)
         
         self.coverimg = gtk.Image()
-        self.coverimg.set_size_request(config.height - 6, config.height - 6)
+        w = int(globals.config.height) - 6
+        self.coverimg.set_size_request(w, w)
         al = gtk.Alignment(0.5, 0.5)
         al.show()
         self.coverimg.show()

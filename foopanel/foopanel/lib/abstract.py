@@ -22,7 +22,6 @@
 
 
 import gtk
-from foopanel import config
 from foopanel.lib import globals
 import os.path
 
@@ -56,7 +55,7 @@ class FoopanelWindow(gtk.Window):
         self.set_skip_pager_hint(True)
         self.stick()
         
-        self.set_keep_above(config.ontop)
+        self.set_keep_above(bool(globals.config.ontop))
     
     
     #
@@ -178,8 +177,8 @@ class PopupWindow(FoopanelWindow):
     
         h = self.get_size()[1]
         
-        if config.position == "top":
-            y = globals.y + config.height
+        if globals.config.position == "top":
+            y = globals.y + globals.config.height
         else:
             y = globals.y - h
     

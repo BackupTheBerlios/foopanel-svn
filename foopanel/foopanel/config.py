@@ -57,7 +57,7 @@ class FooConfig:
         
         self.dialog = gtk.Dialog(_("Foopanel settings"), globals.window, \
                             gtk.DIALOG_DESTROY_WITH_PARENT, \
-                            (gtk.STOCK_OK, gtk.RESPONSE_ACCEPT,\
+                            (gtk.STOCK_SAVE, gtk.RESPONSE_ACCEPT,\
                              gtk.STOCK_CANCEL, gtk.RESPONSE_REJECT))
 
         self.__xml = ElementTree.parse(os.path.realpath(storage))

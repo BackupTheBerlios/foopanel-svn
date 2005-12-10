@@ -36,10 +36,10 @@ import vte
 
 
 class TerminalWindow(abstract.PopupWindow):
-
+    
     def __init__(self):
 
-        abstract.PopupWindow.__init__(self)
+        abstract.PopupWindow.__init__(self, 3, gtk.WINDOW_TOPLEVEL)
 
         self.set_header("QuickTerminal", "Your terminal always ready.")
         
@@ -69,7 +69,13 @@ class TerminalWindow(abstract.PopupWindow):
 
         terminal.fork_command()
         
-        terminal.connect("child-exited", lambda t: terminal.fork_command())
+        terminal.connect("child-exited", self.__cb_exited)
+        
+    
+    def __cb_exited(self, terminal):
+        
+        terminal.fork_command()
+        self.toggle()
 
 
 

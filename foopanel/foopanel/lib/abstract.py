@@ -41,14 +41,9 @@ class AbstractPlugin(gtk.HBox):
 
 class FoopanelWindow(gtk.Window):
 
-    def __init__(self, panel = False):
+    def __init__(self, wtype = gtk.WINDOW_POPUP):
     
-        if panel:
-            gtkwtype = gtk.WINDOW_TOPLEVEL
-        else:
-            gtkwtype = gtk.WINDOW_POPUP
-            
-        gtk.Window.__init__(self, gtkwtype)
+        gtk.Window.__init__(self, wtype)
         
         self.set_decorated(False)
         self.set_skip_taskbar_hint(True)
@@ -92,9 +87,9 @@ class FoopanelWindow(gtk.Window):
 class PopupWindow(FoopanelWindow):
 
 
-    def __init__(self, border = 3):
+    def __init__(self, border = 3, wtype = gtk.WINDOW_POPUP):
     
-        FoopanelWindow.__init__(self)
+        FoopanelWindow.__init__(self, wtype)
         
         self.set_name("FoopanelPopupWindow")
         

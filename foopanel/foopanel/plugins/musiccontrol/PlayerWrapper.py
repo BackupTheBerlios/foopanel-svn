@@ -1,6 +1,6 @@
 
 #
-# Foopanel MEDIACONTROL plugin
+# Foopanel MUSICCONTROL plugin
 # 
 # Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
 #
@@ -62,6 +62,7 @@ class AbstractPlayerWrapper(gtk.HBox):
         box.add(btn_track)
         
         self.track_label = widgets.ScrollingLabel(_("Music player"))
+        #self.track_label = gtk.Label(_("Music player"))
         self.track_label.show()
         btn_track.add(self.track_label)
         
@@ -166,8 +167,8 @@ class AbstractPlayerWrapper(gtk.HBox):
         if not c:
             c = os.path.join(os.path.dirname(__file__), "icon.png")
         try:
-            cover = gtk.gdk.pixbuf_new_from_file_at_size(c, config.height - 6, 
-                                            config.height - 6)
+            w = int(globals.config.height) - 6
+            cover = gtk.gdk.pixbuf_new_from_file_at_size(c, w, w)
             self.coverimg.set_from_pixbuf(cover)
         except:
             pass

@@ -38,19 +38,18 @@ class ContainerWindow(abstract.PopupWindow):
 
     def __init__(self):
 
-        abstract.PopupWindow.__init__(self)
+        abstract.PopupWindow.__init__(self, 3, gtk.WINDOW_TOPLEVEL)
 
         self.set_header("Embedder", "Order to your desktop.")
         
         socket = gtk.Socket()
         socket.show()
         self.add(socket)
-        self.show_all()
-        
+                
         socket.connect("plug-added", self._cb_socket, "added")
         socket.connect("plug-removed", self._cb_socket, "removed")
         
-        socket.add_id(0x2a0000c)
+        socket.add_id(0x220000c)
         #self.show_all()
         
         #self.show_all()
@@ -68,7 +67,8 @@ class ContainerWindow(abstract.PopupWindow):
         
     
     def _cb_socket(self, widget, action):
-    
+        
+        widget.show_all()    
         print "Plug %s" % action
    
 

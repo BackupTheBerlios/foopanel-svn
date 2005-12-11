@@ -253,11 +253,8 @@ class menu(gtk.ToggleButton):
                     (entry.info.name, cmd)
 
         
-        # Well, this isn't the most elegant thing in the world, but makes 
-        # applications (most of them, at least) not to close when 
-        # Foopanel is killed
-        os.system(cmd+" &")
-        #os.spawnlp(os.P_NOWAIT, cmd)
+        #os.system(cmd+" &")
+        os.spawnlp(os.P_NOWAIT, cmd, "&")
         
         
 

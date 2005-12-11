@@ -1,6 +1,6 @@
 
 #
-# Foopanel MEDIACONTROL plugin
+# Foopanel MUSICCONTROL plugin
 # 
 # Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
 #
@@ -20,9 +20,9 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-name = "MediaPlayer control"
+name = "MusicControl"
 version = "0.1"
-description = "Multimedia controls for media player"
+description = "Control your music player"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 requires = {}
 

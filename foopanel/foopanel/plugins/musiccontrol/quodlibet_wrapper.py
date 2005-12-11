@@ -1,6 +1,6 @@
 
 #
-# Foopanel MEDIACONTROL plugin - Quodlibet wrapper
+# Foopanel MUSICCONTROL plugin - Quodlibet wrapper
 # 
 # Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
 #

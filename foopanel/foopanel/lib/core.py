@@ -67,6 +67,7 @@ class Gui(abstract.FoopanelWindow):
         self.set_title("Foopanel")
         
         self.resize(int(gtk.gdk.screen_width()), int(globals.config.height))
+        globals.height = int(globals.config.height)
         self.reposition()
         self.set_name("FoopanelWindow")
         
@@ -90,7 +91,7 @@ class Gui(abstract.FoopanelWindow):
         self.show()
 
         globals.y = self.get_position()[1]
-        globals.config.height = self.get_size()[1]
+        globals.height = self.get_size()[1]
         
         gtk.main()
 
@@ -138,6 +139,7 @@ class FooMenu(gtk.ToggleButton):
             self.add(box)
             
             plugins = gtk.Button()
+            plugins.connect("clicked", lambda w: globals.config.gui.run_plugins())
             plugins.set_relief(gtk.RELIEF_NONE)
             b = gtk.HBox(False, 1)
             plugins.add(b)
@@ -148,7 +150,7 @@ class FooMenu(gtk.ToggleButton):
             box.add(plugins)
             
             settings = self.button(gtk.STOCK_PREFERENCES)
-            settings.connect("clicked", lambda w: globals.config.dialog.run())
+            settings.connect("clicked", lambda w: globals.config.gui.run_settings())
             box.add(settings)
             
             about = self.button(gtk.STOCK_ABOUT)

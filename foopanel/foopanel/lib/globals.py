@@ -21,8 +21,7 @@
 #
 
 
-# Here I store some variables and constants used in various parts of Foopanel
-# Just initialize them to avoid checking if they exist
+# Some info about the app
 
 class app:
     name = "Foopanel"
@@ -35,13 +34,21 @@ class app:
     artists = [ "Federico Pelloni <federico.pelloni@gmail.com>" ]
     
 
+
+# Here I store some variables and constants used in various parts of Foopanel
+# Just initialize them to avoid checking if they exist
+
 window = None
 plugins = []
 plugin_manager = None
 
 y = None
+height = None
 
 opened_popup = None
+
+
+# These are the plugins registered functions
 
 registered_functions = {
     "on_finish": []

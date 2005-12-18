@@ -38,10 +38,10 @@ class AbstractPlayerWrapper(gtk.HBox):
         
         gtk.HBox.__init__(self, False, 3)
         
-        self.set_size_request(int(globals.config.height) + 100, 0)
+        self.set_size_request(int(globals.height) + 100, 0)
         
         self.coverimg = gtk.Image()
-        w = int(globals.config.height) - 6
+        w = int(globals.height) - 6
         self.coverimg.set_size_request(w, w)
         al = gtk.Alignment(0.5, 0.5)
         al.show()
@@ -167,7 +167,7 @@ class AbstractPlayerWrapper(gtk.HBox):
         if not c:
             c = os.path.join(os.path.dirname(__file__), "icon.png")
         try:
-            w = int(globals.config.height) - 6
+            w = int(globals.height) - 6
             cover = gtk.gdk.pixbuf_new_from_file_at_size(c, w, w)
             self.coverimg.set_from_pixbuf(cover)
         except:

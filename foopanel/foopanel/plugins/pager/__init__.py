@@ -51,7 +51,7 @@ class Plugin(abstract.AbstractPlugin):
         
         rect = gtk.gdk.Rectangle(0, 0, 10, 25)
         tb.size_allocate(rect)
-        tb.set_n_rows(int(int(globals.config.height) // 25))
+        tb.set_n_rows(int(int(globals.height) // 25))
 
         al = gtk.Alignment(0.5, 0.5, 0, 0)
         self.add(al)

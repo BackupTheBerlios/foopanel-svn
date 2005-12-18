@@ -74,7 +74,7 @@ class FoopanelMenuWindow(abstract.PopupWindow):
         if not self.__is_size_set:
             w, h = self.buttons.size_request()
             self.scroll.set_size_request(w, \
-                        min(h + 5, gtk.gdk.screen_height() - int(globals.config.height) - 200))
+                        min(h + 5, gtk.gdk.screen_height() - int(globals.height) - 200))
             self.__is_size_set = True
         
         self.scroll.get_vadjustment().set_value(0)

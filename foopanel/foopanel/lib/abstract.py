@@ -173,7 +173,7 @@ class PopupWindow(FoopanelWindow):
         h = self.get_size()[1]
         
         if globals.config.position == "top":
-            y = globals.y + globals.config.height
+            y = globals.y + globals.height
         else:
             y = globals.y - h
     

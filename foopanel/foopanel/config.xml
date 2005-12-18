@@ -1,27 +1,22 @@
-
 <config>
 	<settings>
-		<debug>False</debug>
 		<height>60</height>
 		<position>bottom</position>
 		<ontop>True</ontop>
 		<theme>SolidBlue-png</theme>
-	</settings>
+		<debug>True</debug>
+	<height>60</height><theme>SolidBlue-png</theme><height>75</height><position>top</position><ontop>True</ontop><height>60</height><theme>SolidBlue-png</theme><height>44</height><position>top</position><ontop>False</ontop><height>60</height><theme>SolidBlue-png</theme><height>74</height><position>top</position><ontop>False</ontop><height>60</height><theme>SolidBlue-png</theme><height>84</height><position>top</position><ontop>False</ontop></settings>
 	<plugins>
 		<plugin name="quickterminal" />
-		<!--<plugin name="menu" />-->
-		<!--<plugin name="spacer">
-			<width>20</width>
-		</plugin>-->
-		<!--<plugin name="embedder" />-->
+		
+		
+		
 		<plugin name="flexible_space" />
 		<plugin name="musiccontrol">
 			<player>quodlibet</player>
 		</plugin>
 		<plugin name="pager" />
-		<!--<plugin name="reloader" />
-		<plugin name="windowlist" />
-		<plugin name="searchbox" />-->
+		
 		<plugin name="separator" />
 		<plugin name="clock" />
 	</plugins>

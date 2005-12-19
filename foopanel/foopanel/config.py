@@ -45,7 +45,7 @@ class PluginList:
         name = item.get("name")
         settings = PluginSettings(item)
         
-        self.__count = self.__count + 1
+        self.__count += 1
                 
         return (name, settings)
         
@@ -92,6 +92,8 @@ class FooConfig:
             
             # Theme
             self.__thememodel.clear()
+            activeiter = self.__thememodel.append(["None"])
+            
             for t in os.listdir(os.path.join(self.__path_here, "themes")):
             
                 d = os.path.join(self.__path_here, "themes", t)
@@ -104,7 +106,9 @@ class FooConfig:
                 iter = self.__thememodel.append([t])
             
                 if t == str(self.__parent.theme):
-                    self.__themecombo.set_active_iter(iter)
+                    activeiter = iter
+            
+            self.__themecombo.set_active_iter(activeiter)
             
         
             # Height
@@ -196,16 +200,13 @@ class FooConfig:
             
         try:
             item = self.__xml.find("settings/%s" % key)
-                
-            if item:
+            
+            try:
                 item.text = str(value)
-                    
-            else:
+            except:
                 node = ElementTree.Element(key)
                 node.text = str(value)
                 self.__xml.find("settings").append(node)
-                
-            print key, self.__xml.findtext("settings/%s" % key)
                 
         except:
             raise
@@ -216,12 +217,12 @@ class FooConfig:
     def __getattr__(self, key):
         
             try:
-                item = self.__xml.findtext("settings/%s" % key)
-                if not item:
+                item = self.__xml.find("settings/%s" % key)
+                if not isinstance(item, ElementTree._ElementInterface):
                     if key == "debug":
                         return False
                     raise AttributeError, "Foopanel configuration has no setting \"%s\"" % key
-                return item
+                return item.text
             except:
                 raise
     

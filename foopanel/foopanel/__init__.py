@@ -34,13 +34,13 @@ def run():
     
     lib.globals.config = config.FooConfig()
 
-    if lib.globals.config.theme:
-        if lib.globals.config.debug:
-            print _("Using theme %s") % lib.globals.config.theme
-        try:
+    try:
+        if lib.globals.config.theme and lib.globals.config.theme != "None":
+            if lib.globals.config.debug:
+                print _("Using theme %s") % lib.globals.config.theme
             gtk.rc_parse("foopanel/themes/%s/gtkrc" % lib.globals.config.theme)
-        except:
-            print _("Warning: unable to load theme, using default")
+    except:
+        print _("Warning: unable to load theme, using default")
 
     gui = lib.core.Gui()
 

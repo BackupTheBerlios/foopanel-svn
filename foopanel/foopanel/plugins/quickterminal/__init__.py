@@ -94,6 +94,7 @@ class Plugin(abstract.AbstractPlugin):
         btn = gtk.ToggleButton()
         btn.set_name("EdgeButton")
         btn.connect("toggled", self._twindow.toggle)
+        btn.set_relief(gtk.RELIEF_NONE)
         self.add(btn)
 
         box = gtk.VBox(False, 2)

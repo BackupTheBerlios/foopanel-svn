@@ -42,7 +42,9 @@ window = None
 plugins = []
 plugin_manager = None
 
+x = None
 y = None
+width = None
 height = None
 
 opened_popup = None

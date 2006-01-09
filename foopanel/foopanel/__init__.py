@@ -41,8 +41,10 @@ def run():
             gtk.rc_parse("foopanel/themes/%s/gtkrc" % lib.globals.config.theme)
     except:
         print _("Warning: unable to load theme, using default")
-
+        
     gui = lib.core.Gui()
+    
+    lib.globals.config.gui = lib.core.ConfDialog()
 
     plugin_manager = lib.core.PluginManager()
 

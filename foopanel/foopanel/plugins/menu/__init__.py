@@ -27,8 +27,7 @@
 
 name           = "Menu"
 version        = "0.1.1"
-description    = "Provides an Xfce-panel-like menu built from Freedesktop.org's "\
-                 "\".desktop\" entries."
+description    = "A new-concept auto-generated menu focused on ease-of-use."
 requires       = {"pyxdg": "xdg"}
 authors        = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 

@@ -2,8 +2,7 @@
 
 name = "Reloader"
 version = "0.1"
-description = "Quickly reload a plugin without restarting Foopanel, useful"\
-              " while developing and testing."
+description = "Quickly reload a plugin without restarting Foopanel"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 requires = {}
 register_functions = { 'on_finish': ['build_list', 'set_callbacks'] }

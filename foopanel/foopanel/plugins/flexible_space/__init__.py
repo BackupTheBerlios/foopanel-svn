@@ -23,7 +23,7 @@
 
 name = "Flexible space"
 version = "0.1"
-description = "Just a simple flexible space to insert space between components"
+description = "Insert the maximum space between plugins"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 requires = {}
 expand = True

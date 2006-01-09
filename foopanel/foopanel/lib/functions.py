@@ -52,8 +52,8 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
             errmsg = _("It requires packages: %s") % string.join(not_satisfied, ", ")
             raise
         
-        plug = plugin.Plugin(settings)
-        plug.show()
+        plugwidget = plugin.Plugin(settings)
+        plugwidget.show()
         #plug.build()
         
         expand = getattr(plugin, "expand", False)
@@ -66,13 +66,13 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
                     except:
                         raise
 
-        globals.plugin_manager.pack_start(plug, expand, expand)
+        globals.plugin_manager.pack_start(plugwidget, expand, expand)
         
         if position > -1:
             globals.plugin_manager.reorder_child(plug, position)
-            globals.plugins.insert(position, (plugin.name, plugin, plug))
+            globals.plugins.insert(position, (plugin.name, plugin, plugwidget, settings))
         else:
-            globals.plugins.append((plugin.name, plugin, plug))
+            globals.plugins.append((plugin.name, plugin, plugwidget, settings))
         
         if reload_module:
             s = 'reloaded'

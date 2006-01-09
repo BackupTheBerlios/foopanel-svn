@@ -23,7 +23,7 @@
 
 name = "Separator"
 version = "0.1"
-description = "Just a simple separator to add a thin division between components"
+description = "Add a thin division line between plugins"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 requires = {}
 expand = False

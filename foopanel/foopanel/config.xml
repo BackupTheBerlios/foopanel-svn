@@ -1,9 +1,10 @@
 <config>
 	<settings>
 		<height>60</height>
-		<position>bottom</position>
+		<hposition>center</hposition>
+		<vposition>bottom</vposition>
 		<ontop>True</ontop>
-		<theme>None</theme>
+		<theme>SolidBlue-png</theme>
 		<debug>True</debug>
 	</settings>
 	<plugins>

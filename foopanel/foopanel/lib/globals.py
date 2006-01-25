@@ -2,7 +2,7 @@
 #
 # Foopanel
 # 
-# Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
+# Copyright (C) 2005 - 2006, Federico Pelloni <federico.pelloni@gmail.com>
 #
 #
 # This program is free software; you can redistribute it and/or modify
@@ -26,13 +26,20 @@
 class app:
     name = "Foopanel"
     version = "0.0.2"
-    copyright = "Copyright (C) 2005, Federico Pelloni"
+    copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
     comments = "A powerful themable and extensible panel for your desktop"
     #license = "GNU Public License version 2 or higher"
     website = "http://foopanel.berlios.de/"
     authors = [ "Federico Pelloni <federico.pelloni@gmail.com>" ]
     artists = [ "Federico Pelloni <federico.pelloni@gmail.com>" ]
     
+
+
+# Some paths
+import os.path
+class paths:
+    themes = os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "themes"))
+    plugins = os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "plugins"))
 
 
 # Here I store some variables and constants used in various parts of Foopanel

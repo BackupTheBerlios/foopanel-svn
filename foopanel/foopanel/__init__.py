@@ -2,7 +2,7 @@
 #
 # Foopanel
 #
-# Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
+# Copyright (C) 2005 - 2006, Federico Pelloni <federico.pelloni@gmail.com>
 #
 #
 # This program is free software; you can redistribute it and/or modify
@@ -25,7 +25,7 @@
 import gtk
 import gettext
 import string
-import config, lib.core, lib.globals
+import config, lib.core, lib.globals, lib.functions
 
 
 def run():
@@ -34,13 +34,9 @@ def run():
     
     lib.globals.config = config.FooConfig()
 
-    try:
-        if lib.globals.config.theme and lib.globals.config.theme != "None":
-            if lib.globals.config.debug:
-                print _("Using theme %s") % lib.globals.config.theme
-            gtk.rc_parse("foopanel/themes/%s/gtkrc" % lib.globals.config.theme)
-    except:
-        print _("Warning: unable to load theme, using default")
+    theme = lib.globals.config.theme
+    if theme != "None":
+        lib.functions.load_theme(theme)
         
     gui = lib.core.Gui()
     

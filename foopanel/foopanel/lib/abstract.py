@@ -1,7 +1,7 @@
 #
 # Foopanel
 # 
-# Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
+# Copyright (C) 2005 - 2006, Federico Pelloni <federico.pelloni@gmail.com>
 #
 #
 # This program is free software; you can redistribute it and/or modify
@@ -50,7 +50,6 @@ class FoopanelWindow(gtk.Window):
         self.set_skip_pager_hint(True)
         self.stick()
         
-        self.set_keep_above(bool(globals.config.ontop))
     
     
     #
@@ -153,7 +152,19 @@ class PopupWindow(FoopanelWindow):
     
         self.show()
         
+    
+    def reposition(self):
         
+        x = self.x + globals.window_x
+        h = self.get_size()[1]
+        
+        if globals.config.vposition == "top":
+            y = globals.window_y + globals.height
+        else:
+            y = globals.window_y - h
+    
+        self.move(x, y) 
+    
         
     def open(self, widget = 0):
     
@@ -161,23 +172,16 @@ class PopupWindow(FoopanelWindow):
             globals.opened_popup.close()
                            
         if type(widget) == type(1):
-            x = widget
+            self.x = widget
         else:
             self.opener = widget
             try:
-                x = widget.allocation.x
+                self.x = widget.allocation.x
             except:
-                x = 0
+                self.x = 0
                 self.opener = None
-    
-        h = self.get_size()[1]
         
-        if globals.config.vposition == "top":
-            y = globals.y + globals.height
-        else:
-            y = globals.y - h
-    
-        self.move(x, y)
+        self.reposition()
         self.show()
         
         globals.opened_popup = self

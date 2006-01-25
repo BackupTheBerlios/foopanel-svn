@@ -1,7 +1,7 @@
 #
 # Foopanel "MENU" plugin
 # 
-# Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
+# Copyright (C) 2005 - 2006, Federico Pelloni <federico.pelloni@gmail.com>
 #
 #
 # This program is free software; you can redistribute it and/or modify
@@ -299,7 +299,7 @@ class Plugin(abstract.AbstractPlugin):
         pangolayout = self.description.get_layout()
         d_width = 0
         
-        if str(globals.config.position) == "top":
+        if str(globals.config.vposition) == "top":
             box.pack_start(self.description, False, False)
             box.pack_start(al1, True, True)
         else:

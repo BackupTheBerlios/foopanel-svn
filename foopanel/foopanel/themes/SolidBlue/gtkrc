@@ -146,3 +146,41 @@ style "EdgeButton" {
 }
 widget "FoopanelWindow.*.EdgeButton" style "EdgeButton"
 
+
+style "progress" {
+	engine "pixmap" {
+		image {
+			function				= BOX
+			recolorable				= TRUE
+			detail					= "trough"
+			file					= "trough.png"
+			stretch					= TRUE
+			orientation				= HORIZONTAL
+		}
+		image {
+			function				= BOX
+			recolorable				= FALSE
+			detail					= "bar"
+			file					= "bar.png"
+			stretch					= TRUE
+		}
+		image {
+			function				= BOX
+			recolorable				= TRUE
+			detail					= "trough"
+			file					= "trough-v.png"
+			stretch					= TRUE
+			orientation				= VERTICAL
+		}
+		image {
+			function				= BOX
+			recolorable				= TRUE
+			detail					= "bar"
+			file					= "bar-v.png"
+			stretch					= TRUE
+			orientation				= VERTICAL
+		}
+	}
+} 
+widget "Foopanel*.*GtkProgress*" style "progress"
+

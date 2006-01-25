@@ -2,7 +2,7 @@
 #
 # Foopanel MUSICCONTROL plugin
 # 
-# Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
+# Copyright (C) 2005 - 2006, Federico Pelloni <federico.pelloni@gmail.com>
 #
 #
 # This program is free software; you can redistribute it and/or modify
@@ -36,8 +36,13 @@ class Plugin(abstract.AbstractPlugin):
         abstract.AbstractPlugin.__init__(self)
         
         self.__settings = settings
-
-        exec("from %s_wrapper import Wrapper" % str(self.__settings.player))
+        
+        try:
+            player = str(self.__settings.player)
+        except:
+            player = "quodlibet"
+        
+        exec("from %s_wrapper import Wrapper" % player)
         w = Wrapper()
         w.show_all()
         

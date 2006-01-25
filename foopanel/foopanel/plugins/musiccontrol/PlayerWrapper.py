@@ -2,7 +2,7 @@
 #
 # Foopanel MUSICCONTROL plugin
 # 
-# Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
+# Copyright (C) 2005 - 2006, Federico Pelloni <federico.pelloni@gmail.com>
 #
 #
 # This program is free software; you can redistribute it and/or modify
@@ -72,6 +72,7 @@ class AbstractPlayerWrapper(gtk.HBox):
         box.add(btnbox)
         
         btn_prev = gtk.Button()
+        btn_prev.set_relief(gtk.RELIEF_NONE)
         btn_prev.show()
         btn_prev_img = gtk.Image()
         btn_prev_img.show()
@@ -81,6 +82,7 @@ class AbstractPlayerWrapper(gtk.HBox):
         btnbox.pack_start(btn_prev, False, False)
         
         btn_play = gtk.Button()
+        btn_play.set_relief(gtk.RELIEF_NONE)
         btn_play.show()
         self.play_img = gtk.Image()
         self.play_img.show()
@@ -90,6 +92,7 @@ class AbstractPlayerWrapper(gtk.HBox):
         btnbox.pack_start(btn_play, False, False)
         
         btn_next = gtk.Button()
+        btn_next.set_relief(gtk.RELIEF_NONE)
         btn_next.show()
         btn_next_img = gtk.Image()
         btn_next_img.show()

@@ -2,7 +2,7 @@
 #
 # Foopanel
 #
-# Copyright (C) 2005, Federico Pelloni <federico.pelloni@gmail.com>
+# Copyright (C) 2005 - 2006, Federico Pelloni <federico.pelloni@gmail.com>
 #
 #
 # This program is free software; you can redistribute it and/or modify
@@ -22,10 +22,13 @@
 
 
 import gtk, gtk.gdk, gobject
-import sys, os.path
+import sys, os.path, string
 
 import globals, functions, abstract, config
 
+
+path_here = os.path.dirname(__file__)
+pluginpath = os.path.realpath(os.path.join(path_here, "..", "plugins"))
 
 
 class PluginManager(gtk.HBox):
@@ -65,21 +68,29 @@ class Gui(abstract.FoopanelWindow):
         abstract.FoopanelWindow.__init__(self, True)
 
         self.set_title("Foopanel")
+        self.set_name("FoopanelWindow")
+        self.resize()
+        
+        self.set_keep_above(bool(globals.config.ontop))
+        
+        globals.window = self
+        
+    
+    def resize(self):
         
         try:
             cwidth = int(globals.config.width)
         except:
             cwidth = 100
-        width = int(gtk.gdk.screen_width() * cwidth / 100)
-        globals.width = width
-        self.resize(width, int(globals.config.height))
-        globals.height = int(globals.config.height)
+        width = max(1, int(gtk.gdk.screen_width() * cwidth / 100))
+        height = max(1, int(globals.config.height))
+        abstract.FoopanelWindow.resize(self, width, height)
+        
+        globals.width, globals.height = self.get_size()
+        
         self.reposition()
-        self.set_name("FoopanelWindow")
         
-        globals.window = self
-        
-
+    
     def reposition(self):
 
         try: hpos = globals.config.hposition.lower()
@@ -93,18 +104,22 @@ class Gui(abstract.FoopanelWindow):
         else: x = int((gtk.gdk.screen_width() - globals.width)/2)
             
         if vpos == "top": y = 0
-        else: y = gtk.gdk.screen_height() - int(globals.config.height)
+        else: y = gtk.gdk.screen_height() - int(globals.height)
 
         self.move(x, y)
+        globals.window_x = x
+        globals.window_y = y
+        
+        try:
+            globals.opened_popup.reposition()
+        except:
+            pass
 
 
     def run(self):
 
         self.show()
 
-        globals.y = self.get_position()[1]
-        globals.height = self.get_size()[1]
-        
         gtk.main()
 
 
@@ -198,14 +213,12 @@ class FooMenu(gtk.ToggleButton):
         self.show_all()
 
 
-
 class ConfDialog:
-        
+    
+   
     def __init__(self):
     
-        self.__path_here = os.path.dirname(__file__)
-        
-        file = os.path.join(self.__path_here, "config_ui.glade")
+        file = os.path.join(path_here, "config_ui.glade")
     
         glade = gtk.glade.XML(file)
     
@@ -216,25 +229,91 @@ class ConfDialog:
         self.__page_settings = self.__notebook.page_num(glade.get_widget("page_settings"))
         self.__page_plugins = self.__notebook.page_num(glade.get_widget("page_plugins"))
         
+        
+        ### SETTING: THEME
         self.__thememodel = gtk.ListStore(str)
         self.__themecombo = glade.get_widget("combo_themes")
         self.__themecombo.set_model(self.__thememodel)
         cr = gtk.CellRendererText()
         self.__themecombo.pack_start(cr, True)
         self.__themecombo.add_attribute(cr, 'text', 0)
+                
+        def cb_change_theme(combo):
+            """ CB: load the new theme and save it into preferences """
+            theme = self.__thememodel[combo.get_active()][0]
+            if theme != globals.config.theme:
+                if theme == "None":
+                    gtk.rc_reset_styles(gtk.settings_get_default())
+                else:
+                    functions.load_theme(theme)
+                globals.config.theme = theme
         
+        self.__themecombo.connect("changed", cb_change_theme)
+        
+        
+        ### SETTING: HEIGHT
+        def cb_change_height(scale):
+            height = int(scale.get_value())
+            globals.config.height = height
+            globals.window.resize()
         self.__heightscale = glade.get_widget("scale_height")
+        self.__heightscale.connect("value-changed", cb_change_height)
         
+        
+        ### SETTING: WIDTH
+        def cb_change_width(scale):
+            width = int(scale.get_value())
+            globals.config.width = width
+            globals.window.resize()
+        self.__widthscale = glade.get_widget("scale_width")
+        self.__widthscale.connect("value-changed", cb_change_width)
+        
+        
+        ### SETTING: VERTICAL POSITION
+        def cb_change_vpos(btn):
+            if btn.get_active():
+                 vpos = "top"
+            else:
+                 vpos = "bottom"
+            globals.config.vposition = vpos
+            globals.window.reposition()
         self.__radiotop = glade.get_widget("radio_pos_top")
         self.__radiobtm = glade.get_widget("radio_pos_bottom")
+        self.__radiotop.connect("toggled", cb_change_vpos)
+        
+        
+        ### SETTING: HORIZONTAL POSITION
+        def cb_change_hpos(btn):
+            if self.__radiolft.get_active():
+                hpos = "left"
+            elif self.__radiorgt.get_active():
+                hpos = "right"
+            else:
+                hpos = "center"
+            globals.config.hposition = hpos
+            globals.window.reposition()
         self.__radiolft = glade.get_widget("radio_pos_left")
         self.__radiocnt = glade.get_widget("radio_pos_center")
         self.__radiorgt = glade.get_widget("radio_pos_right")
+        self.__radiolft.connect("toggled", cb_change_hpos)
+        self.__radiocnt.connect("toggled", cb_change_hpos)
         
+        
+        ### SETTING: KEEP ON TOP
+        def cb_change_kot(btn):
+            kot = btn.get_active()
+            globals.config.ontop = str(kot)
+            globals.window.set_keep_above(kot)
         self.__checkontop = glade.get_widget("check_ontop")
+        self.__checkontop.connect("toggled", cb_change_kot)
         
+        
+        ### PLUGINS ###
+        import gobject
+        self.__pluginstore = gtk.ListStore(gobject.TYPE_PYOBJECT, str)
         self.__plugintree = glade.get_widget("tree_plugins")
         self.__plugintree.set_headers_visible(False)
+        self.__plugintree.set_model(self.__pluginstore)
         column = gtk.TreeViewColumn("Plugin")
         self.__plugintree.append_column(column)
         crend = gtk.CellRendererText()
@@ -251,25 +330,87 @@ class ConfDialog:
                 self.__frmselplug.set_sensitive(False)
             else:
                 self.__frmselplug.set_sensitive(True)
-            print globals.plugins[model.get_value(iter, 0)][3]
         
         selection.connect("changed", cb_plugin_selected)
         
+        ### Utility: get selected plugin
+        def sel_get_plugin():
+            model, iter = selection.get_selected()
+            plugin = model.get_value(iter, 0)
+            return plugin
         
+        
+        ### PLUGIN: ADD
+        self.__addplmodel = gtk.ListStore(str, str)
         self.__comboaddpl = glade.get_widget("combo_add_plugin")
+        self.__comboaddpl.set_model(self.__addplmodel)
         crend2 = gtk.CellRendererText()
         self.__comboaddpl.pack_start(crend2, True)
         self.__comboaddpl.add_attribute(crend2, 'markup', 0)
         
+        def cb_plugin_add(btn):
+            c = self.__comboaddpl
+            model = c.get_model()
+            plugin = model[c.get_active()][1]
+            settings = globals.config.plugins.append(plugin)
+            functions.load_plugin(plugin, settings)
+            #self.__parse_plugin(plugin)
+            iter = self.__pluginstore.append((globals.plugins[-1], globals.plugins[-1][0]))
+            selection.select_iter(iter)
         self.__buttnaddpl = glade.get_widget("button_add_plugin")
+        self.__buttnaddpl.connect("clicked", cb_plugin_add)
+        
+        
+        ### PLUGIN: INFO
+        def cb_plugin_info(btn):
+            plugin = sel_get_plugin()[1]
+            w = gtk.AboutDialog()
+            w.set_name(plugin.name)
+            w.set_comments(plugin.description)
+            w.set_version(plugin.version)
+            w.set_authors(plugin.authors)
+            w.run()
+        self.__btnpluginfo = glade.get_widget("button_plugin_about")
+        self.__btnpluginfo.connect("clicked", cb_plugin_info)
         
         self.__btnplugsettings = glade.get_widget("button_plugin_settings")
-        self.__btnplugremove = glade.get_widget("button_plugin_remove")
         
+        ### PLUGIN: REMOVE
+        def cb_plugin_remove(btn):
+            plugin = sel_get_plugin()
+            functions.remove_plugin(plugin)
+            self.__pluginstore.remove(selection.get_selected()[1])
+            del globals.config.plugins[plugin[3]]
+        self.__btnplugremove = glade.get_widget("button_plugin_remove")
+        self.__btnplugremove.connect("clicked", cb_plugin_remove)
+        
+        ### PLUGIN: MOVE
+        def cb_plugin_move(btn, where):
+            plugin = sel_get_plugin()
+            pos = functions.move_plugin(plugin, where)
+            if pos:
+                model, iter = selection.get_selected()
+                if where == "top":
+                    model.move_after(iter, None)
+                elif where == "up":
+                    model.move_before(iter, model.get_iter((model.get_path(iter)[0]-1)))
+                elif where == "down":
+                    model.move_after(iter, model.iter_next(iter))
+                elif where == "bottom":
+                    model.move_before(iter, None)
+                globals.config.plugins.move(plugin[3], pos - 1)
+        # Top
         self.__btnplugtop = glade.get_widget("button_plugin_top")
+        self.__btnplugtop.connect("clicked", cb_plugin_move, "top")
+        # Up
         self.__btnplugup = glade.get_widget("button_plugin_up")
+        self.__btnplugup.connect("clicked", cb_plugin_move, "up")
+        # Down
         self.__btnplugdown = glade.get_widget("button_plugin_down")
+        self.__btnplugdown.connect("clicked", cb_plugin_move, "down")
+        # Bottom
         self.__btnplugbtm = glade.get_widget("button_plugin_bottom")
+        self.__btnplugbtm.connect("clicked", cb_plugin_move, "bottom")
         
         self.__set_values_to_gui()
         
@@ -281,9 +422,9 @@ class ConfDialog:
         self.__thememodel.clear()
         activeiter = self.__thememodel.append(["None"])
         
-        for t in os.listdir(os.path.join(self.__path_here, "..", "themes")):
+        for t in os.listdir(os.path.join(path_here, "..", "themes")):
         
-            d = os.path.join(self.__path_here, "..", "themes", t)
+            d = os.path.join(path_here, "..", "themes", t)
         
             if not os.path.isdir(d):
                 continue
@@ -297,22 +438,26 @@ class ConfDialog:
         
         self.__themecombo.set_active_iter(activeiter)
         
-    
+        # Width
+        if globals.config.width is None:
+            globals.config.width = 100
+        self.__widthscale.set_value(int(globals.config.width))
+        
         # Height
-        if not globals.config.height:
+        if globals.config.height is None:
             globals.config.height = 60
         self.__heightscale.set_value(int(globals.config.height))
     
     
         # Position
-        if not globals.config.vposition:
+        if globals.config.vposition is None:
             globals.config.vposition = "bottom"
         if str(globals.config.vposition).lower() == "top":
             self.__radiotop.set_active(True)
         else:
             self.__radiobtm.set_active(True)
             
-        if not globals.config.hposition:
+        if globals.config.hposition is None:
             globals.config.hposition = "center"
         if str(globals.config.vposition).lower() == "left":
             self.__radiolft.set_active(True)
@@ -323,7 +468,7 @@ class ConfDialog:
         
     
         # Keep on top
-        if not globals.config.ontop:
+        if globals.config.ontop is None:
             globals.config.ontop = True
         self.__checkontop.set_active(bool(globals.config.ontop))
         
@@ -331,44 +476,40 @@ class ConfDialog:
         self.__init_pluginview()
         
     
+    def __parse_plugin(self, t):
+        
+        d = os.path.join(pluginpath, t)
+
+        if not os.path.isdir(d):
+            return False
+        if not "__init__.py" in os.listdir(d):
+            return False
+        
+        try:
+            exec("import plugins.%s as plugin" % t)
+            self.__addplmodel.append( ("<b>%s</b>\n%s" % (plugin.name, plugin.description), t) )
+        except:
+            raise
     
     
     def __init_pluginview(self):
         
         self.__frmselplug.set_sensitive(False)
     
-        store = gtk.ListStore(int, str)
+        self.__pluginstore.clear()
         
         for p in globals.plugins:
             
-            store.append((globals.plugins.index(p), p[0]))
-        
-        self.__plugintree.set_model(store)
+            self.__pluginstore.append((p, p[0]))
         
         
+        self.__addplmodel.clear()
         
-        store2 = gtk.ListStore(str, str)
+        for t in os.listdir(pluginpath):
         
-        ppath = os.path.realpath(os.path.join(self.__path_here, "..", "plugins"))
+            self.__parse_plugin(t)
         
-        for t in os.listdir(ppath):
         
-            d = os.path.join(ppath, t)
-        
-            if not os.path.isdir(d):
-                continue
-            if not "__init__.py" in os.listdir(d):
-                continue
-            
-            try:
-                exec("import plugins.%s as plugin" % t)
-                
-                store2.append( ("<b>%s</b>\n%s" % (plugin.name, plugin.description), t) )
-            except:
-                 pass
-        
-        self.__comboaddpl.set_model(store2)
-            
         
     
     

@@ -1,15 +1,15 @@
 <config>
-	<settings>
-		<height>60</height>
-		<hposition>center</hposition>
-		<vposition>bottom</vposition>
-		<ontop>False</ontop>
-		<theme>SolidBlue</theme>
-		<debug>True</debug>
-		<width>75</width>
-	</settings>
-	<plugins>
-		<plugin name="quickterminal" />
-		<plugin name="separator" /><plugin name="menu" /><plugin name="flexible_space" /><plugin name="separator" /><plugin name="musiccontrol" /><plugin name="clock" />
-	<plugin name="separator" /></plugins>
+        <settings>
+                <height>60</height>
+                <hposition>center</hposition>
+                <vposition>bottom</vposition>
+                <ontop>False</ontop>
+                <theme>SolidBlue</theme>
+                <debug>True</debug>
+                <width>100</width>
+        </settings>
+        <plugins>
+            <plugin name="clock" />
+        	<plugin name="flexible_space" /><plugin name="quickterminal" /><plugin name="separator" /><plugin name="pager" />
+        <plugin name="menu" /></plugins>
 </config>

@@ -52,7 +52,7 @@ class Plugin(abstract.AbstractPlugin):
         
         self.add(tb)
         
-        
+        self.show_all()
         
         
         

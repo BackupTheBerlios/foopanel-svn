@@ -51,13 +51,8 @@ class PluginManager(gtk.HBox):
 
         self.show()
 
-
-        for f in globals.registered_functions['on_finish']:
-
-            f()
-            
-            
-
+        functions.execute_registered('on_finish')
+        
 
 
             
@@ -86,9 +81,12 @@ class Gui(abstract.FoopanelWindow):
         height = max(1, int(globals.config.height))
         abstract.FoopanelWindow.resize(self, width, height)
         
+        globals.requested_size = (width, height)
         globals.width, globals.height = self.get_size()
         
         self.reposition()
+        
+        functions.execute_registered('on_resize')
         
     
     def reposition(self):

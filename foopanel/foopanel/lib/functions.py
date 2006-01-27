@@ -63,7 +63,7 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
             for event, functions in plugin.register_functions.iteritems():
                 for f in functions:
                     try:
-                        globals.registered_functions[event].append(getattr(plug, f))
+                        globals.registered_functions[event].append(getattr(plugwidget, f))
                     except:
                         raise
 
@@ -161,4 +161,13 @@ def load_theme(theme):
     except:
         print _("Warning: unable to load theme %s, using default" % theme)
 
+
+
+def execute_registered(event):
+    
+    try:
+        for f in globals.registered_functions[event]:
+            f()
+    except:
+        pass
 

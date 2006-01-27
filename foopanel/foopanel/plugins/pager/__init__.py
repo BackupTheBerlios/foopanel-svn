@@ -22,17 +22,20 @@
 
 
 name = "Pager"
-version = "0.1"
+version = "0.2"
 description = "Draw a pager on the panel"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 requires = {"gnome-python-extras": "wnck"}
 expand = False
+register_functions = { 'on_resize': ['resize'] }
 
 
 from foopanel.lib import abstract, globals
 import gtk, gtk.gdk
 import wnck
 
+border = 3
+row_height = 25
 
 class Plugin(abstract.AbstractPlugin):
 
@@ -40,28 +43,43 @@ class Plugin(abstract.AbstractPlugin):
     
         abstract.AbstractPlugin.__init__(self)
         
-        self.set_border_width(3)
+        self.set_border_width(border)
         
-        #self.set_size_request(int(config.height * 4 / 3), config.height)
+        self.screen = wnck.screen_get_default()
+        self.screen.connect("workspace-created", lambda s,w: self.resize())
+        self.screen.connect("workspace-destroyed", lambda s,w: self.resize())
         
-        screen = wnck.screen_get_default()
+        self.pager = wnck.Pager(self.screen)
         
-        tb = wnck.Pager(screen)
-        tb.show()
+        #rect = gtk.gdk.Rectangle(0, 0, 10, 25)
+        #pager.size_allocate(rect)
         
-        rect = gtk.gdk.Rectangle(0, 0, 10, 25)
-        tb.size_allocate(rect)
-        tb.set_n_rows(int(int(globals.height) // 25))
-
         al = gtk.Alignment(0.5, 0.5, 0, 0)
-        self.add(al)
         al.show()
 
-        al.add(tb)
+        self.add(al)
+        al.add(self.pager)
+
+        self.show_all()
+    
+    
+    def resize(self):
         
+        ws = self.screen.get_workspace_count()
         
+        rows = min(max(int(int(globals.requested_size[1] - 2*border) / row_height), 1), ws)
+        if ws % 2 != 0: ws += 1
+        cols = ws / rows
         
+        if rows * cols < ws:
+            cols += 1
+            rows = ws/cols
+            
+        width =  cols * row_height*4/3
+        height = row_height * rows
         
+        self.pager.set_size_request(width, height)
+        self.pager.set_n_rows(rows)
         
         
         

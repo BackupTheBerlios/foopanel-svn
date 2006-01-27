@@ -1,0 +1,22 @@
+2006-01-27  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/plugins/pager/__init__.py: various (quite big) improvements, version bump
+	* foopanel/lib/core.py: added an hook for plugins to run functions when panel is resized
+	* foopanel/lib/functions.py: added "execute_registered" to run plugin-registered functions
+
+2006-01-25  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/plugins/musiccontrol/__init__.py: added a default "player" setting 
+												 (currently "quodlibet")
+	* foopanel/plugins/menu/__init__.py: fixed "vposition" setting
+	* README: Copyright year bump
+	* foopanel/lib/core.py: "plugin_add", "plugin_remove" and "plugin_move" callbacks
+	* foopanel/lib/functions.py: added "remove_plugin" method to unload a plugin
+								 added "move_plugin" method to moe a plugin on the panel
+	* foopanel/config.py: added "__delitem__" method to remove a plugin
+						  added "move" method to move a plugin
+						  added "append" method to append a plugin
+
+2006-01-20  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	Starting of ChangeLog

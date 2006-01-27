@@ -60,6 +60,7 @@ opened_popup = None
 # These are the plugins registered functions
 
 registered_functions = {
-    "on_finish": []
+    "on_finish": [],
+    "on_resize": []
 }
 

@@ -307,6 +307,8 @@ class ConfDialog:
         
         
         ### PLUGINS ###
+        self.__btnplugpref = glade.get_widget("button_plugin_settings")
+        
         import gobject
         self.__pluginstore = gtk.ListStore(gobject.TYPE_PYOBJECT, str)
         self.__plugintree = glade.get_widget("tree_plugins")
@@ -328,6 +330,8 @@ class ConfDialog:
                 self.__frmselplug.set_sensitive(False)
             else:
                 self.__frmselplug.set_sensitive(True)
+                self.__btnplugsettings.set_sensitive(hasattr(sel_get_plugin().widget, "config"))
+                
         
         selection.connect("changed", cb_plugin_selected)
         
@@ -351,9 +355,9 @@ class ConfDialog:
             model = c.get_model()
             plugin = model[c.get_active()][1]
             settings = globals.config.plugins.append(plugin)
-            functions.load_plugin(plugin, settings)
+            obj = functions.load_plugin(plugin, settings)
             #self.__parse_plugin(plugin)
-            iter = self.__pluginstore.append((globals.plugins[-1], globals.plugins[-1][0]))
+            iter = self.__pluginstore.append((obj, obj.name))
             selection.select_iter(iter)
         self.__buttnaddpl = glade.get_widget("button_add_plugin")
         self.__buttnaddpl.connect("clicked", cb_plugin_add)
@@ -361,7 +365,7 @@ class ConfDialog:
         
         ### PLUGIN: INFO
         def cb_plugin_info(btn):
-            plugin = sel_get_plugin()[1]
+            plugin = sel_get_plugin().module
             w = gtk.AboutDialog()
             w.set_name(plugin.name)
             w.set_comments(plugin.description)
@@ -378,7 +382,7 @@ class ConfDialog:
             plugin = sel_get_plugin()
             functions.remove_plugin(plugin)
             self.__pluginstore.remove(selection.get_selected()[1])
-            del globals.config.plugins[plugin[3]]
+            del globals.config.plugins[plugin.settings]
         self.__btnplugremove = glade.get_widget("button_plugin_remove")
         self.__btnplugremove.connect("clicked", cb_plugin_remove)
         
@@ -396,7 +400,7 @@ class ConfDialog:
                     model.move_after(iter, model.iter_next(iter))
                 elif where == "bottom":
                     model.move_before(iter, None)
-                globals.config.plugins.move(plugin[3], pos - 1)
+                globals.config.plugins.move(plugin.settings, pos - 1)
         # Top
         self.__btnplugtop = glade.get_widget("button_plugin_top")
         self.__btnplugtop.connect("clicked", cb_plugin_move, "top")
@@ -498,7 +502,7 @@ class ConfDialog:
         
         for p in globals.plugins:
             
-            self.__pluginstore.append((p, p[0]))
+            self.__pluginstore.append((p, p.name))
         
         
         self.__addplmodel.clear()

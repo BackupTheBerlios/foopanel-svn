@@ -1,3 +1,9 @@
+2006-02-04  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/lib/abstract.py: a new Plugin class to manage the various parts of a plugin
+	* foopanel/plugins/musiccontrol/quodlibet_wrapper.py: a small fix to make playing check work
+														  with 0.17
+
 2006-01-27  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/plugins/pager/__init__.py: various (quite big) improvements, version bump

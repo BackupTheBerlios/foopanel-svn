@@ -39,6 +39,10 @@ class PluginSettings:
             raise AttributeError, "There is no setting \"%s\" for plugin \"%s\"" \
                   % (key, self.xmlnode.get("name"))
         return setting
+    
+    def list(self):
+        
+        return [(s.tag, s.text) for s in list(self.xmlnode)]
 
 
 class PluginList:

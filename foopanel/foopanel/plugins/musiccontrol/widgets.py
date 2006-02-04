@@ -49,8 +49,6 @@ class ScrollingLabel(gtk.Label):
     
         gtk.Label.__init__(self, "")
         
-        self._layout = self.get_layout()
-        
         self.set_text(string)
         
         gobject.timeout_add(int(50 / speed), self.draw)
@@ -80,7 +78,7 @@ class ScrollingLabel(gtk.Label):
     
     def set_text(self, label):
         
-        l = self._layout
+        l = self.get_layout()
         l.set_markup(label)
         
         w, h = l.get_pixel_size()
@@ -108,7 +106,7 @@ class ScrollingLabel(gtk.Label):
             
             txt = l.get_text(self)[1:] + l.get_text(self)[:1]
             l.set_text(self, txt)
-        
+
         return True
         
         

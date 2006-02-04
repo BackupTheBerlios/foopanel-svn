@@ -97,10 +97,11 @@ class Wrapper(AbstractPlayerWrapper):
     def check_paused(self):
     
         if self._is_running:
-            if os.path.exists(self._paused_file):
-                self.set_paused(True)
-            else:
+            p = os.popen("quodlibet --status")
+            if p.read().split()[0] == 'playing':
                 self.set_paused(False)
+            else:
+                self.set_paused(True)
         
                 
     

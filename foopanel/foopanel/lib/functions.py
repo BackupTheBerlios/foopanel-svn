@@ -26,6 +26,8 @@ import globals
 import sys, os.path
 import gtk
 
+import abstract
+
 sys.path.append(os.path.realpath(os.path.join(globals.paths.plugins, "..")))
 
 
@@ -69,11 +71,16 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
 
         globals.plugin_manager.pack_start(plugwidget, expand, expand)
         
+        pobject = abstract.Plugin(name      = plugin.name, 
+                                  module    = plugin, 
+                                  widget    = plugwidget, 
+                                  settings  = settings)
+        
         if position > -1:
             globals.plugin_manager.reorder_child(plug, position)
-            globals.plugins.insert(position, (plugin.name, plugin, plugwidget, settings))
+            globals.plugins.insert(position, pobject)
         else:
-            globals.plugins.append((plugin.name, plugin, plugwidget, settings))
+            globals.plugins.append(pobject)
         
         if reload_module:
             s = 'reloaded'
@@ -83,7 +90,7 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
         if globals.config.debug:
             print _("Plugin '%s' %s") % (plugin.name, s)
             
-        return True
+        return pobject
         
     except:
         
@@ -99,36 +106,33 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
 
 def reload_plugin(index):
 
-    name, module, widget, settings = globals.plugins[index]
+    plugin = globals.plugins[index]
     
-    pos = globals.plugin_manager.get_children().index(widget)
+    pos = globals.plugin_manager.get_children().index(plugin.widget)
         
-    globals.plugin_manager.remove(widget)
+    globals.plugin_manager.remove(plugin.widget)
     
     del(globals.plugins[index])
 
-    return load_plugin(name, widget.__settings, module, pos)
+    return load_plugin(plugin.name, plugin.settings, plugin.module, pos)
 
 
 
 def remove_plugin(plugin):
     
-    name, module, widget, settings = plugin
+    globals.plugin_manager.remove(plugin.widget)
     
-    globals.plugin_manager.remove(widget)
-    
-    globals.plugins.remove(plugin)
+    globals.plugins.remove(plugin.plugin)
     
     if globals.config.debug:
-        print _("Plugin '%s' removed" % module.name)
+        print _("Plugin '%s' removed" % plugin.name)
 
 
 
 def move_plugin(plugin, position):
     
-    name, module, widget, settings = plugin
     children = globals.plugin_manager.get_children()
-    curpos = children.index(widget)
+    curpos = children.index(plugin.widget)
     newpos = None
     
     if position == "top":
@@ -141,7 +145,7 @@ def move_plugin(plugin, position):
         newpos = -1
     
     if newpos != curpos:
-        globals.plugin_manager.reorder_child(widget, newpos)
+        globals.plugin_manager.reorder_child(plugin.widget, newpos)
         return newpos
     else:
         return False

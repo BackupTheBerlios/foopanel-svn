@@ -1,3 +1,7 @@
+2006-02-08  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/themes/SolidBlue/gtkrc: fixed ProgressBar problem
+
 2006-02-04  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/lib/abstract.py: a new Plugin class to manage the various parts of a plugin

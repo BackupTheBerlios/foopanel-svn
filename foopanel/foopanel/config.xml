@@ -9,10 +9,16 @@
                 <width>100</width>
         </settings>
         <plugins>
-            <plugin name="quickterminal" /><plugin name="flexible_space" /><plugin name="meminfo" /><plugin name="musiccontrol">
+            <plugin name="quickterminal" />
+            <plugin name="flexible_space" />
+            <plugin name="meminfo">
+            	<vlabel>True</vlabel>
+            </plugin>
+            <plugin name="musiccontrol">
             	<player>quodlibet</player>
             </plugin>
             <plugin name="clock" />
-        	<plugin name="separator" /><plugin name="pager" />
+        	<plugin name="separator" />
+        	<plugin name="pager" />
         </plugins>
 </config>

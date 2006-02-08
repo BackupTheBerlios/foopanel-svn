@@ -150,35 +150,38 @@ widget "FoopanelWindow.*.EdgeButton" style "EdgeButton"
 style "progress" {
 	engine "pixmap" {
 		image {
-			function				= BOX
-			recolorable				= TRUE
-			detail					= "trough"
-			file					= "trough.png"
-			stretch					= TRUE
-			orientation				= HORIZONTAL
+			function	= BOX
+			recolorable	= TRUE
+			detail		= "trough"
+			file		= "trough-v.png"
+			stretch		= TRUE
+			orientation	= VERTICAL
+			border		= { 2,2,2,2 }
 		}
 		image {
-			function				= BOX
-			recolorable				= FALSE
-			detail					= "bar"
-			file					= "bar.png"
-			stretch					= TRUE
+			function	= BOX
+			recolorable	= TRUE
+			detail		= "bar"
+			file		= "bar-v.png"
+			stretch		= TRUE
+			orientation	= VERTICAL
+			border		= { 2,2,2,2 }
 		}
 		image {
-			function				= BOX
-			recolorable				= TRUE
-			detail					= "trough"
-			file					= "trough-v.png"
-			stretch					= TRUE
-			orientation				= VERTICAL
+			function	= BOX
+			recolorable	= TRUE
+			detail		= "trough"
+			file		= "trough-h.png"
+			stretch		= TRUE
+			orientation	= HORIZONTAL
 		}
 		image {
-			function				= BOX
-			recolorable				= TRUE
-			detail					= "bar"
-			file					= "bar-v.png"
-			stretch					= TRUE
-			orientation				= VERTICAL
+			function	= BOX
+			recolorable	= TRUE
+			detail		= "bar"
+			file		= "bar-h.png"
+			stretch		= TRUE
+			orientation	= HORIZONTAL
 		}
 	}
 } 

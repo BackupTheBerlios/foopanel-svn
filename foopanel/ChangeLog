@@ -1,5 +1,6 @@
 2006-02-08  Federico Pelloni  <federico.pelloni@gmail.com>
 
+	* foopanel/plugins/musiccontrol/quodlibet_wrapper.py: small fix in check_paused
 	* foopanel/themes/SolidBlue/gtkrc: fixed ProgressBar problem
 
 2006-02-04  Federico Pelloni  <federico.pelloni@gmail.com>

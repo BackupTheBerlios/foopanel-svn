@@ -102,6 +102,7 @@ class Wrapper(AbstractPlayerWrapper):
                 self.set_paused(False)
             else:
                 self.set_paused(True)
+            p.close()
         
                 
     

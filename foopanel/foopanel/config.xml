@@ -14,11 +14,11 @@
             <plugin name="meminfo">
             	<vlabel>True</vlabel>
             </plugin>
-            <plugin name="musiccontrol">
+            <plugin name="separator" /><plugin name="musiccontrol">
             	<player>quodlibet</player>
             </plugin>
-            <plugin name="clock" />
-        	<plugin name="separator" />
-        	<plugin name="pager" />
-        </plugins>
+            <plugin name="pager" />
+        <plugin name="separator" />
+        	<plugin name="clock" />
+        	</plugins>
 </config>

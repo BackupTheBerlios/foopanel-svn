@@ -14,7 +14,11 @@
             <plugin name="meminfo">
             	<vlabel>True</vlabel>
             </plugin>
-            <plugin name="separator" /><plugin name="musiccontrol">
+            <plugin name="volumecontrol">
+            	<mixer>gnome-volume-control</mixer>
+            </plugin>
+            <plugin name="separator" />
+            <plugin name="musiccontrol">
             	<player>quodlibet</player>
             </plugin>
             <plugin name="pager" />

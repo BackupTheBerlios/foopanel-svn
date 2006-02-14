@@ -163,6 +163,10 @@ class FooMenu(gtk.ToggleButton):
             box.set_border_width(0)
             self.add(box)
             
+            settings = self.button(gtk.STOCK_PREFERENCES)
+            settings.connect("clicked", lambda w: globals.config.gui.run_settings())
+            box.add(settings)
+            
             plugins = gtk.Button()
             plugins.connect("clicked", lambda w: globals.config.gui.run_plugins())
             plugins.set_relief(gtk.RELIEF_NONE)
@@ -173,10 +177,6 @@ class FooMenu(gtk.ToggleButton):
             lbl.set_use_underline(True)
             b.add(lbl)
             box.add(plugins)
-            
-            settings = self.button(gtk.STOCK_PREFERENCES)
-            settings.connect("clicked", lambda w: globals.config.gui.run_settings())
-            box.add(settings)
             
             about = self.button(gtk.STOCK_ABOUT)
             about.connect("clicked", lambda w: globals.aboutwindow.run())

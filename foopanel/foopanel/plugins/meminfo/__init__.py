@@ -19,7 +19,7 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-from foopanel.lib import abstract
+from foopanel.lib import abstract, globals
 import gtk, gobject
 
 name = "MemInfo"
@@ -46,8 +46,9 @@ class Mem(gtk.HBox):
     def __init__(self, vlabel = False):
         gtk.HBox.__init__(self)
         
-        self.tooltip = gtk.Tooltips().set_tip
-
+        self.tooltip = globals.tooltips.set_tip
+        
+        self.eb = gtk.EventBox()
         self.bar = gtk.ProgressBar()
         self.bar.set_orientation(gtk.PROGRESS_BOTTOM_TO_TOP)
         self.bar.set_size_request(11, 55)
@@ -59,7 +60,8 @@ class Mem(gtk.HBox):
             except:
                 pass
         self.pack_start(lbl)
-        self.pack_start(self.bar)
+        self.pack_start(self.eb)
+        self.eb.add(self.bar)
 
         self.f = open(self.file)
         gtk.quit_add(0, self.quit)
@@ -80,7 +82,7 @@ class Mem(gtk.HBox):
 
         free = total-cached-free
 
-        self.tooltip(self.bar, "used %s/%sMB" % (str(free/1024), str(total/1024)))
+        self.tooltip(self.eb, "Used %s of %s MB" % (str(free/1024), str(total/1024)))
         self.bar.set_fraction(free/float(total))
         return True
 

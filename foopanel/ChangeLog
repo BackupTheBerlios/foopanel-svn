@@ -1,3 +1,11 @@
+2006-02-13  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/plugins/musiccontrol/quodlibet_wrapper.py: Fix to prevent an Exception from blocking
+	* foopanel/lib/core.py: switched "Plugins" and "Settings" position on FooMenu
+	* foopanel/plugins/volumecontrol/__init__.py: work on this
+	* foopanel/plugins/meminfo/__init__.py: fixed to make tooltips work (and use the shared obj)
+	* foopanel/__init__.py: initialize an application-level gtk.Tooltips object
+
 2006-02-08  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/plugins/musiccontrol/quodlibet_wrapper.py: small fix in check_paused

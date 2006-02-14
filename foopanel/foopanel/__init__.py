@@ -38,6 +38,9 @@ def run():
     if theme != "None":
         lib.functions.load_theme(theme)
         
+    lib.globals.tooltips = gtk.Tooltips()
+    lib.globals.tooltips.enable()
+        
     gui = lib.core.Gui()
     
     lib.globals.config.gui = lib.core.ConfDialog()

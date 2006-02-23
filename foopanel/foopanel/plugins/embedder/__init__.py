@@ -25,6 +25,7 @@ name = "Embedder"
 version = "0.1"
 description = "Embed an application into Foopanel"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 requires = {}
 
 

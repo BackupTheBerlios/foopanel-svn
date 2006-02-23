@@ -25,6 +25,7 @@ name = "Separator"
 version = "0.1"
 description = "Add a thin division line between plugins"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 requires = {}
 expand = False
 

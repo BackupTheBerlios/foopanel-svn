@@ -25,6 +25,7 @@ name = "Clock"
 version = "0.1"
 description = "Draw a digital clock and print today's date on the panel"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 requires = {}
 
 

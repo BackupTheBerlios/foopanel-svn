@@ -25,6 +25,7 @@ name = "QuickTerminal"
 version = "0.1"
 description = "An always-ready terminal on Foopanel"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 requires = {"vte": "vte"}
 expand = False
 

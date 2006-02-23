@@ -25,6 +25,7 @@ name = "Flexible space"
 version = "0.1"
 description = "Insert the maximum space between plugins"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 requires = {}
 expand = True
 

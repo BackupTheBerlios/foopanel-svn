@@ -25,9 +25,11 @@ name = "Pager"
 version = "0.2"
 description = "Draw a pager on the panel"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 requires = {"gnome-python-extras": "wnck"}
 expand = False
 register_functions = { 'on_resize': ['resize'] }
+
 
 
 from foopanel.lib import abstract, globals

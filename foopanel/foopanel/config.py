@@ -30,19 +30,41 @@ import os, os.path
 
 class PluginSettings:
     
-    def __init__(self, node):
+    reserved = ['xmlnode']
+    
+    def __init__( self, node ):
         self.xmlnode = node
     
-    def __getattr__(self, key):
-        setting = self.xmlnode.findtext(key)
+    def __getattr__( self, key ):
+        setting = self.xmlnode.findtext( key )
         if setting == None:
             raise AttributeError, "There is no setting \"%s\" for plugin \"%s\"" \
-                  % (key, self.xmlnode.get("name"))
+                  % ( key, self.xmlnode.get( "name" ) )
         return setting
     
-    def list(self):
+    def list( self ):
         
-        return [(s.tag, s.text) for s in list(self.xmlnode)]
+        return [( s.tag, s.text ) for s in list( self.xmlnode )]
+    
+    def __setattr__( self, key, value ):
+        
+        if key in self.reserved:
+            self.__dict__[key] = value
+            return
+            
+        try:
+            item = self.xmlnode.find( key )
+            
+            try:
+                item.text = str( value )
+            except:
+                node = ElementTree.Element( key )
+                node.text = str( value )
+                self.xmlnode.append( node )
+                
+        except:
+            raise
+        
 
 
 class PluginList:
@@ -51,51 +73,51 @@ class PluginList:
     __plist = None
     __count = 0
     
-    def __init__(self, xml):
+    def __init__( self, xml ):
         self.__xml = xml
     
         
-    def __iter__(self):
-        self.__plist = self.__xml.findall("plugins/plugin")
+    def __iter__( self ):
+        self.__plist = self.__xml.findall( "plugins/plugin" )
         self.__count = 0
         return self
     
     
-    def next(self):
+    def next( self ):
         
-        if self.__count >= len(self.__plist):
+        if self.__count >= len( self.__plist ):
             raise StopIteration
         
         item = self.__plist[self.__count]
         
-        name = item.get("name")
-        settings = PluginSettings(item)
+        name = item.get( "name" )
+        settings = PluginSettings( item )
         
         self.__count += 1
                 
-        return (name, settings)
+        return ( name, settings )
     
     
-    def __delitem__(self, item):
+    def __delitem__( self, item ):
         
-        pluginroot = self.__xml.find("plugins")
-        pluginroot.remove(item.xmlnode)
-        
-    
-    def move(self, item, pos):
-        
-        pluginroot = self.__xml.find("plugins")
-        pluginroot.remove(item.xmlnode)
-        pluginroot.insert(pos, item.xmlnode)
+        pluginroot = self.__xml.find( "plugins" )
+        pluginroot.remove( item.xmlnode )
         
     
-    def append(self, item):
+    def move( self, item, pos ):
         
-        pluginroot = self.__xml.find("plugins")
-        node = ElementTree.Element("plugin")
+        pluginroot = self.__xml.find( "plugins" )
+        pluginroot.remove( item.xmlnode )
+        pluginroot.insert( pos, item.xmlnode )
+        
+    
+    def append( self, item ):
+        
+        pluginroot = self.__xml.find( "plugins" )
+        node = ElementTree.Element( "plugin" )
         node.attrib["name"] = item
-        pluginroot.append(node)
-        settings = PluginSettings(node)
+        pluginroot.append( node )
+        settings = PluginSettings( node )
         return settings
             
 
@@ -109,33 +131,33 @@ class FooConfig:
             
     reserved = ['_FooConfig__reserved', '_FooConfig__xml', 'plugins', 'gui']
 
-    def __init__(self):
+    def __init__( self ):
         
-        self.__xml = ElementTree.parse(os.path.realpath(storage))
+        self.__xml = ElementTree.parse( os.path.realpath( storage ) )
         #self.__xml = xml.getroot()
         
-        self.plugins = PluginList(self.__xml)
+        self.plugins = PluginList( self.__xml )
         
-        gtk.quit_add(0, self.__dump)
-        
-        
+        gtk.quit_add( 0, self.__dump )
         
         
-    def __setattr__(self, key, value):
+        
+        
+    def __setattr__( self, key, value ):
         
         if key in self.reserved:
             self.__dict__[key] = value
             return
             
         try:
-            item = self.__xml.find("settings/%s" % key)
+            item = self.__xml.find( "settings/%s" % key )
             
             try:
-                item.text = str(value)
+                item.text = str( value )
             except:
-                node = ElementTree.Element(key)
-                node.text = str(value)
-                self.__xml.find("settings").append(node)
+                node = ElementTree.Element( key )
+                node.text = str( value )
+                self.__xml.find( "settings" ).append( node )
                 
         except:
             raise
@@ -143,11 +165,11 @@ class FooConfig:
     
         
     
-    def __getattr__(self, key):
+    def __getattr__( self, key ):
         
             try:
-                item = self.__xml.find("settings/%s" % key)
-                if not isinstance(item, ElementTree._ElementInterface):
+                item = self.__xml.find( "settings/%s" % key )
+                if not isinstance( item, ElementTree._ElementInterface ):
                     if key == "debug":
                         return False
                     raise AttributeError, "Foopanel configuration has no setting \"%s\"" % key
@@ -156,12 +178,12 @@ class FooConfig:
                 raise
     
     
-    def __dump(self):
+    def __dump( self ):
         
         if self.debug:
             print "Final dump!"
-        f = open(os.path.realpath(storage), "w")
-        self.__xml.write(f)
+        f = open( os.path.realpath( storage ), "w" )
+        self.__xml.write( f )
         f.close()
         
             

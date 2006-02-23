@@ -25,6 +25,7 @@ version = "0.1"
 description = "Control your music player"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 requires = {}
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 
 
 from foopanel.lib import abstract, globals

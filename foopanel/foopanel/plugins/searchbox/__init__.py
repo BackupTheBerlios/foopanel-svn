@@ -25,6 +25,7 @@ name = "SearchBox"
 version = "0.1"
 description = """Provide a smart box to search on the internet."""
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 requires = {}
 
 

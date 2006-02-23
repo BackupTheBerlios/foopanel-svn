@@ -12,18 +12,15 @@
             <plugin name="quickterminal" />
             <plugin name="flexible_space" />
            	<plugin name="cpuload">
-           		<vlabel>True</vlabel>
+           		<vlabel>1</vlabel>
            	</plugin>
             <plugin name="meminfo">
-            	<vlabel>True</vlabel>
+            	<vlabel>1</vlabel>
             </plugin>
             <plugin name="volumecontrol">
             	<mixer>gnome-volume-control</mixer>
             </plugin>
             <plugin name="separator" />
-            <plugin name="musiccontrol">
-            	<player>quodlibet</player>
-            </plugin>
             <plugin name="pager" />
         	<plugin name="separator" />
         	<plugin name="clock" />

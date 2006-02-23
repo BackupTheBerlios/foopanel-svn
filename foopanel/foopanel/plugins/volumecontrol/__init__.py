@@ -23,7 +23,13 @@ name = "VolumeControl"
 version = "0.1"
 description = "Control audio volume"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2006, Federico Pelloni"
 requires = {}
+
+config_scheme = [
+    # Option type        Option labe                Bind    config opt  Plugin.callback
+    { 'type': 'text', 'label': 'Mixer command', 'bind': ( 'mixer', 'set_mixer_cmd' ) }
+]
 
 
 from foopanel.lib import abstract, globals, dconfig
@@ -50,6 +56,7 @@ class Plugin(abstract.AbstractPlugin):
                 except:
                     term = "xterm"
             self.mixer_cmd = "%s -e %s" % (term, default_mixer)
+            settings.mixer = self.mixer_cmd
         
         box = gtk.HBox(False, 0)
         self.add(box)
@@ -108,4 +115,10 @@ class Plugin(abstract.AbstractPlugin):
     def __cb_mixer(self, widget):
         
         os.spawnlp(os.P_NOWAIT, self.mixer_cmd, "&")
+        
+    
+    def set_mixer_cmd(self, cmd):
+        
+        self.mixer_cmd = cmd
+        
         

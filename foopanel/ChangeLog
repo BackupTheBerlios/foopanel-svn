@@ -1,6 +1,15 @@
 2006-02-23  Federico Pelloni  <federico.pelloni@gmail.com>
 
+	* foopanel/plugins/volumecontrol/__init__.py: added dconfig support
+	* foopanel/plugins/meminfo/__init__.py: added dconfig support
+	* foopanel/config.py: added support for changing plugin settings
+	* foopanel/lib/dconfig.py: NEW - initial work
+	* foopanel/plugins/*/__init__.py: Added the Copyright notice for the about dialog
+	* foopanel/lib/core.py: Some code elegance fix
+							Added the support for the plugins' "Copyright" notice
+							Added plugin config dialog callback
 	* foopanel/plugins/cpuload/__init__.py: NEW (and incredibly working)
+											Added dconfig support
 
 2006-02-22  Federico Pelloni  <federico.pelloni@gmail.com>
 

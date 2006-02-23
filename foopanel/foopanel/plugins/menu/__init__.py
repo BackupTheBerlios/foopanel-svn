@@ -30,6 +30,7 @@ version        = "0.1.1"
 description    = "A new-concept auto-generated menu focused on ease-of-use."
 requires       = {"pyxdg": "xdg"}
 authors        = ["Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 
 
 from foopanel.lib import abstract, globals

@@ -1,3 +1,4 @@
+#
 # Foopanel "MemInfo" plugin
 #
 # Copyright (C) 2006, Sergey Fedoseev <fedoseev.sergey@gmail.com>
@@ -25,21 +26,40 @@ import gtk, gobject
 name = "MemInfo"
 version = "0.1"
 description = "Shows memory usage"
-authors = ["Sergey Fedoseev <fedoseev.sergey@gmail.com>"]
+authors = ["Sergey Fedoseev <fedoseev.sergey@gmail.com>", "Federico Pelloni <federico.pelloni@gmail.com>"]
+copyright = "Copyright (C) 2006, Sergey Fedoseev"
 expand = False
 requires = {}
+
+config_scheme = [
+    # Option type        Option labe                Bind    config opt  Plugin.callback
+    { 'type': 'boolean', 'label': 'Vertical labels', 'bind': ( 'vlabel', 'set_label_dir' ) }
+]
+
 
 class Plugin(abstract.AbstractPlugin):
     def __init__(self, settings):
         abstract.AbstractPlugin.__init__(self)
         
         try:
-            vlabel = bool(settings.vlabel)
+            vlabel = bool(int(settings.vlabel))
         except:
             vlabel = False
         
-        self.add(Memory(vlabel))
-        self.add(Swap(vlabel))
+        self.mem = Memory()
+        self.add(self.mem)
+        self.swap = Swap()
+        self.add(self.swap)
+        
+        self.set_label_dir(vlabel)
+    
+    def set_label_dir(self, vertical):
+        
+        if vertical: angle = 90
+        else: angle = 0 
+        self.mem.label.set_angle(angle)
+        self.swap.label.set_angle(angle)
+        
 
 class Mem(gtk.HBox):
     file = '/proc/meminfo'
@@ -53,13 +73,8 @@ class Mem(gtk.HBox):
         self.bar.set_orientation(gtk.PROGRESS_BOTTOM_TO_TOP)
         self.bar.set_size_request(11, 55)
         
-        lbl = gtk.Label(self.name)
-        if vlabel:
-            try:
-                lbl.set_angle(90)
-            except:
-                pass
-        self.pack_start(lbl)
+        self.label = gtk.Label(self.name)
+        self.pack_start(self.label)
         self.pack_start(self.eb)
         self.eb.add(self.bar)
 

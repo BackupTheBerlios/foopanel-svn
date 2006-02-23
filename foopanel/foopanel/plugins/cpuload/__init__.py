@@ -27,9 +27,17 @@ version = "0.1"
 description = "Show CPU load"
 authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 expand = False
+copyright = "Copyright (C) 2006, Federico Pelloni"
 requires = {}
 
-class Plugin(abstract.AbstractPlugin):
+
+config_scheme = [
+    # Option type        Option labe                Bind    config opt  Plugin.callback
+    { 'type': 'boolean', 'label': 'Vertical label', 'bind': ( 'vlabel', 'set_label_dir' ) }
+]
+
+
+class Plugin( abstract.AbstractPlugin ):
     
     name = "cpu"
     file = "/proc/stat"
@@ -37,55 +45,61 @@ class Plugin(abstract.AbstractPlugin):
     __oldused = 0
     __oldtotal = 0
         
-    def __init__(self, settings):
+    def __init__( self, settings ):
         
-        abstract.AbstractPlugin.__init__(self)
+        abstract.AbstractPlugin.__init__( self )
         
         try:
-            vlabel = bool(settings.vlabel)
+            vlabel = bool( int( settings.vlabel ) )
         except:
             vlabel = False
             
         self.eb = gtk.EventBox()
         self.bar = gtk.ProgressBar()
-        self.bar.set_orientation(gtk.PROGRESS_BOTTOM_TO_TOP)
-        self.bar.set_size_request(11, 55)
+        self.bar.set_orientation( gtk.PROGRESS_BOTTOM_TO_TOP )
+        self.bar.set_size_request( 11, 55 )
         
-        lbl = gtk.Label(self.name)
-        if vlabel:
-            try:
-                lbl.set_angle(90)
-            except:
-                pass
-        self.pack_start(lbl)
-        self.pack_start(self.eb)
-        self.eb.add(self.bar)
+        self._label = gtk.Label( self.name )
+        self.set_label_dir( vlabel )
+        self.pack_start( self._label )
+        self.pack_start( self.eb )
+        self.eb.add( self.bar )
         
         self.tooltip = globals.tooltips.set_tip
 
-        self.f = open(self.file)
-        gtk.quit_add(0, self.quit)
+        self.f = open( self.file )
+        gtk.quit_add( 0, self.quit )
         self.update()
-        gobject.timeout_add(1000, self.update)
+        gobject.timeout_add( 1000, self.update )
 
         self.show_all()        
         
     
-    def quit(self):
+    def quit( self ):
         self.f.close()
 
-    def update(self):
-        self.f.seek(0)
+    def update( self ):
+        self.f.seek( 0 )
         info = self.f.readlines()[0].split()
-        used = int(info[1]) + int(info[2]) + int(info[3])
-        total = int(info[1]) + int(info[2]) + int(info[3]) + int(info[4])
+        used = int( info[1] ) + int( info[2] ) + int( info[3] )
+        total = int( info[1] ) + int( info[2] ) + int( info[3] ) + int( info[4] )
         if total - self.__oldtotal != 0:
-            load = float(used - self.__oldused) / float(total - self.__oldtotal)
+            load = float( used - self.__oldused ) / float( total - self.__oldtotal )
         else:
             load = 0
         self.__oldused = used
         self.__oldtotal = total
-        self.tooltip(self.eb, "CPU load: %d%%" % int(load*100))
-        self.bar.set_fraction(load)
+        self.tooltip( self.eb, "CPU load: %d%%" % int( load*100 ) )
+        self.bar.set_fraction( load )
         return True
     
+    
+    def set_label_dir( self, vertical ):
+        
+        if vertical:
+            self._label.set_angle( 90 )
+        else:
+            self._label.set_angle( 0 )
+        
+        
+            

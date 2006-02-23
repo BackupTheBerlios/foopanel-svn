@@ -27,7 +27,7 @@ authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 requires = {}
 
 
-from foopanel.lib import abstract, globals, dconfig
+from foopanel.lib import abstract, globals
 import os.path
 
 class Plugin(abstract.AbstractPlugin):
@@ -49,10 +49,5 @@ class Plugin(abstract.AbstractPlugin):
         
         self.add(w)
         
-        path = os.path.realpath(os.path.join(os.path.dirname(__file__), "config.xml"))
-        self.config = dconfig.build("gtk", path)
-        
-        for key, value in settings.list():
-            self.config.set("general", key, value)
 
 

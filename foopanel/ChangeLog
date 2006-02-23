@@ -1,3 +1,13 @@
+2006-02-23  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/plugins/cpuload/__init__.py: NEW (and incredibly working)
+
+2006-02-22  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/lib/functions.py: Small fix when removing a plugin
+	* foopanel/lib/core.py: Some threads work (but not working, so still commented out)
+	* foopanel/plugins/musiccontrol/__init__.py: Remove a wrong import
+
 2006-02-13  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/plugins/musiccontrol/quodlibet_wrapper.py: Fix to prevent an Exception from blocking

@@ -24,11 +24,53 @@
 import gtk, gtk.gdk, gobject
 import sys, os.path, string
 
+#try:
+#    import threading
+#except:
+#    import dummy_threading as threading
+
 import globals, functions, abstract, config
 
 
 path_here = os.path.dirname(__file__)
 pluginpath = os.path.realpath(os.path.join(path_here, "..", "plugins"))
+
+
+#class PluginLoader(threading.Thread):
+#    
+#    def __init__(self):
+#        threading.Thread.__init__(self)
+#        gtk.threads_init()
+#        
+#    def run(self):
+#        
+#        print "Loading plugins..."
+#        for plugin, settings in globals.config.plugins:
+#            functions.load_plugin(plugin, settings)
+#        functions.execute_registered('on_finish')
+#        gtk.threads_enter()
+#        globals.plugin_manager.show_all()
+#        globals.plugin_manager.remove(globals.pulsar)
+#        print "Plugins loaded"
+#        gtk.threads_leave()
+        
+
+
+#class AnimatedImage(gtk.Image):
+#    
+#    def __init__(self, filename):
+#        gtk.Image.__init__(self)
+#        
+#        self.__anim = gtk.gdk.PixbufAnimation(filename)
+#        self.__iter = self.__anim.get_iter()
+#        self.__update()
+#        
+#    def __update(self):
+#        frame = self.__iter.get_pixbuf()
+#        self.set_from_pixbuf(frame)
+#        gobject.timeout_add(self.__iter.get_delay_time(), self.__update)
+#        self.__iter.advance()
+#        return False
 
 
 class PluginManager(gtk.HBox):
@@ -43,17 +85,24 @@ class PluginManager(gtk.HBox):
         globals.plugin_manager = self
         
         self.pack_start(FooMenu(), False, False)
-
-        for p in globals.config.plugins:
-
-                functions.load_plugin(p[0], p[1])
-                continue
-
-        self.show()
-
+        
+        #globals.pulsar = AnimatedImage(os.path.join(path_here, "..", "pulsar.gif"))
+        #self.pack_start(globals.pulsar, False, False)
+        
+        self.show_all()
+        
+        #loader = PluginLoader()
+        
+        #print "starting loader"
+        #loader.start()
+        
+        for plugin, settings in globals.config.plugins:
+            functions.load_plugin(plugin, settings)
         functions.execute_registered('on_finish')
         
-
+    
+    
+    
 
             
 class Gui(abstract.FoopanelWindow):
@@ -209,6 +258,8 @@ class FooMenu(gtk.ToggleButton):
         self.connect("toggled", self.menu.toggle)
         
         self.show_all()
+
+
 
 
 class ConfDialog:

@@ -68,7 +68,8 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
                         globals.registered_functions[event].append(getattr(plugwidget, f))
                     except:
                         raise
-
+        
+        #gtk.threads_enter()
         globals.plugin_manager.pack_start(plugwidget, expand, expand)
         
         pobject = abstract.Plugin(name      = plugin.name, 
@@ -81,6 +82,7 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
             globals.plugins.insert(position, pobject)
         else:
             globals.plugins.append(pobject)
+        #gtk.threads_leave()
         
         if reload_module:
             s = 'reloaded'
@@ -122,7 +124,7 @@ def remove_plugin(plugin):
     
     globals.plugin_manager.remove(plugin.widget)
     
-    globals.plugins.remove(plugin.plugin)
+    globals.plugins.remove(plugin)
     
     if globals.config.debug:
         print _("Plugin '%s' removed" % plugin.name)

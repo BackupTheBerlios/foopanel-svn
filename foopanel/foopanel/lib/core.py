@@ -85,7 +85,7 @@ class PluginManager( gtk.HBox ):
 
         globals.plugin_manager = self
         
-        self.pack_start( FooMenu(), False, False )
+        self.pack_start( FooMenu(), False, True )
         
         #globals.pulsar = AnimatedImage(os.path.join(path_here, "..", "pulsar.gif"))
         #self.pack_start(globals.pulsar, False, False)
@@ -254,12 +254,13 @@ class FooMenu( gtk.ToggleButton ):
         else:
             arr_dir = gtk.ARROW_UP
         arrow = gtk.Arrow( arr_dir, gtk.SHADOW_IN )
+        arrow.show()
         self.add( arrow )
         
         self.menu = self.FooMenuWindow()
         self.connect( "toggled", self.menu.toggle )
         
-        self.show_all()
+        self.show()
 
 
 
@@ -466,6 +467,7 @@ class ConfDialog:
                 elif where == "bottom":
                     model.move_before( iter, None )
                 globals.config.plugins.move( plugin.settings, pos - 1 )
+
         # Top
         self.__btnplugtop = glade.get_widget( "button_plugin_top" )
         self.__btnplugtop.connect( "clicked", cb_plugin_move, "top" )
@@ -572,7 +574,7 @@ class ConfDialog:
         
         self.__addplmodel.clear()
         
-        for t in os.listdir( pluginpath ):
+        for t in sorted(os.listdir( pluginpath )):
         
             self.__parse_plugin( t )
         

@@ -27,29 +27,46 @@ import globals
 class og:
     
     def format(self, value): return value
-    def unformat(self, vlaue): return value
+    def unformat(self, value): return value
     def get(self): return None
     def set(self, value): pass
     def build(self): 
         self.obj = gtk.HBox(False, 5)
-        self.obj.add(gtk.Label(self.setting['label']))
+        l = gtk.Label(self.option['label']+":")
+        l.props.xalign = 0
+        self.obj.add(l)
         w = self.widget()
         self.obj.add(w)
         return w
     
-    def __init__(self, plugin, setting):
+    def __init__(self, plugin, option):
         self.plugin = plugin
-        self.setting = setting
+        self.option = option
         self.w = self.build()
-        self.set(self.unformat(getattr(self.plugin.settings, self.setting['bind'][0])))
-        self.w.connect(self.signal, self.save)
+        try:
+            self.set(self.unformat(getattr(self.plugin.settings, self.option['bind'][0])))
+        except:
+            try:
+                self.set(self.option['default'])
+            except:
+                pass
+        if self.signal is not None:
+            self.w.connect(self.signal, self.save)
         
     def save(self, *args):
         value = self.get()
-        setattr(self.plugin.settings, self.setting['bind'][0], self.format(value))
-        getattr(self.plugin.widget, self.setting['bind'][1])(self.unformat(value))
+        setattr(self.plugin.settings, self.option['bind'][0], self.format(value))
+        getattr(self.plugin.widget, self.option['bind'][1])(self.unformat(value))
         
     def get_widget(self):
+        return self.obj
+
+### OPTI0N TYPE: LABEL
+class option_label(og):
+    signal = None
+    def build(self):
+        self.obj = gtk.Label()
+        self.obj.set_markup(self.option['label'])
         return self.obj
 
 ### OPTION TYPE: BOOLEAN
@@ -70,7 +87,37 @@ class option_text(og):
     def format(self, value): return str(value)
     def unformat(self, value): return str(value)
         
-    
+### OPTION TYPE: DROPDOWN
+class option_dropdown(og):
+    signal = "changed"
+    def build(self):
+        self.__model = gtk.ListStore(str, str)
+        for o in self.option['options']:
+            self.__model.append(o)
+        combo = gtk.ComboBox(self.__model)
+        cr = gtk.CellRendererText()
+        combo.pack_start(cr)
+        combo.add_attribute(cr, 'text', 1)
+        self.obj = gtk.HBox(False, 5)
+        l = gtk.Label(self.option['label']+":")
+        l.props.xalign = 0
+        self.obj.add(l)
+        self.obj.add(combo)
+        return combo
+    def get(self):
+        try:
+            return self.__model[self.w.get_active()][0]
+        except:
+            return None
+    def set(self, value):
+        for row in self.__model:
+            if row[0] == value:
+                self.w.set_active_iter(row.iter)
+                break
+    def format(self, value): return str(value)
+    def unformat(self, value): return str(value)
+
+
 
 
 
@@ -85,12 +132,15 @@ class DConfig(gtk.Dialog):
         gtk.Dialog.__init__(self, title, globals.config_dialog, (),\
                             (gtk.STOCK_CLOSE, gtk.RESPONSE_CLOSE))
                             
-        self.vbox.set_border_width(5)
+        self.set_border_width(5)
+        self.vbox.set_spacing(3)
         
         lbl = gtk.Label()
         lbl.set_markup('<b><span size="larger">%s</span>\n%s</b>' % 
                         (_("%s plugin") % plugin.module.name, _("Settings"))
                       )
+        lbl.props.xalign = 0
+        lbl.props.ypad = 10
         self.vbox.pack_start(lbl, False)
         
         settings = plugin.module.config_scheme
@@ -98,11 +148,48 @@ class DConfig(gtk.Dialog):
         for s in settings:
             self.__new_setting(s)
         
+        self.set_default_size(250,200)
+        
+        self.set_resizable(False)
+        
+        
         
     
-    def __new_setting(self, setting):
+    def __new_setting(self, option):
 
-        exec("s = option_%s(self.plugin, setting)" % setting['type'])
-        self.vbox.add(s.get_widget())
+        exec("s = option_%s(self.plugin, option)" % option['type'])
+        self.vbox.pack_start(s.get_widget(), False)
+        
+        
         
 
+def DConfigLoad(plugin):
+        
+    try:
+        scheme = plugin.module.config_scheme
+        settings = plugin.settings
+    except:
+        return False
+    
+    for option in scheme:
+        
+        if not 'bind' in option:
+            continue
+        
+        # Get the value from settings
+        try:
+            value = getattr(settings, option['bind'][0])
+            # Unformat the value from settings file (XML) to Python value
+            exec("value = option_%s.unformat(None, value)" % option['type'])
+        # Otherwise use default value
+        except:
+            try:
+                value = option['default']
+            except:
+                value = None
+        
+        # Execute the callback: plugin.widget.set_this_thing(value)
+        getattr(plugin.widget, option['bind'][1])(value)
+    
+    
+        

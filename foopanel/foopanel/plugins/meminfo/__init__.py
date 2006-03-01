@@ -32,27 +32,25 @@ expand = False
 requires = {}
 
 config_scheme = [
-    # Option type        Option labe                Bind    config opt  Plugin.callback
-    { 'type': 'boolean', 'label': 'Vertical labels', 'bind': ( 'vlabel', 'set_label_dir' ) }
+    { 
+      'type': 'boolean', 
+      'label': 'Vertical labels', 
+      'bind': ( 'vlabel', 'set_label_dir' ),
+      'default': False
+    }
 ]
 
 
 class Plugin(abstract.AbstractPlugin):
-    def __init__(self, settings):
-        abstract.AbstractPlugin.__init__(self)
+    def __init__(self):
         
-        try:
-            vlabel = bool(int(settings.vlabel))
-        except:
-            vlabel = False
+        abstract.AbstractPlugin.__init__(self)
         
         self.mem = Memory()
         self.add(self.mem)
         self.swap = Swap()
         self.add(self.swap)
         
-        self.set_label_dir(vlabel)
-    
     def set_label_dir(self, vertical):
         
         if vertical: angle = 90

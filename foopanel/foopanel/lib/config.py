@@ -21,8 +21,8 @@
 
 storage = "foopanel/config.xml"
 
-from lib import globals
-from lib.elementtree import ElementTree
+import globals
+from elementtree import ElementTree
 import gtk, gtk.glade
 import os, os.path
 
@@ -60,6 +60,7 @@ class PluginSettings:
             except:
                 node = ElementTree.Element( key )
                 node.text = str( value )
+                node.tail = "\n"
                 self.xmlnode.append( node )
                 
         except:
@@ -108,7 +109,10 @@ class PluginList:
         
         pluginroot = self.__xml.find( "plugins" )
         pluginroot.remove( item.xmlnode )
-        pluginroot.insert( pos, item.xmlnode )
+        if pos >= 0:
+            pluginroot.insert( pos, item.xmlnode )
+        else:
+            pluginroot.append( item.xmlnode )
         
     
     def append( self, item ):
@@ -116,6 +120,7 @@ class PluginList:
         pluginroot = self.__xml.find( "plugins" )
         node = ElementTree.Element( "plugin" )
         node.attrib["name"] = item
+        node.tail = "\n"
         pluginroot.append( node )
         settings = PluginSettings( node )
         return settings

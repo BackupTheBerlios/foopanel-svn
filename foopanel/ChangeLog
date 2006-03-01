@@ -1,3 +1,20 @@
+2006-03-01  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/plugins/*/__init__.py: fixed to support automatic settings loading
+	* foopanel/__init__.py: fixed config.py import
+	* foopanel/lib/dconfig.py: added DConfigLoad to load settings
+							   changed "setting" to "option" to avoid confusion
+	* foopanel/lib/config.py: moved in lib/ - import fixes
+
+2006-02-28  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/config.py: some xml prettifying
+						  fixed move-to-bottom function
+	* foopanel/plugins/musiccontrol/PlayerWrapper.py: added "show_cover" option support
+	* foopanel/plugins/musiccontrol/__init__.py: added support for dconfig
+	* foopanel/lib/dconfig.py: new options "dropdown" and plain "label" + some improvements
+	* foopanel/plugins/musiccontrol/widgets.py: switched from set_markup to set_text to avoid problems
+
 2006-02-23  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/plugins/volumecontrol/__init__.py: added dconfig support

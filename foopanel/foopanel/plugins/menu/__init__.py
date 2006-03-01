@@ -278,10 +278,8 @@ class menu(gtk.ToggleButton):
 
 class Plugin(abstract.AbstractPlugin):
 
-    def __init__(self, settings):
+    def __init__(self):
         
-        global tips
-    
         abstract.AbstractPlugin.__init__(self)
         
         box = gtk.VBox(False, 1)

@@ -29,14 +29,49 @@ copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 requires = {}
 
 
+config_scheme = [
+    {
+     'type':     'boolean',
+     'label':    'Show time',
+     'bind':     ('show_time', 'set_show_time'),
+     'default':  True
+    },
+    {
+     'type':     'text',
+     'label':    'Time format',
+     'bind':     ('time_format', 'set_time_format'),
+     'default':  '%X'
+    },
+    {
+     'type':     'boolean',
+     'label':    'Show date',
+     'bind':     ('show_date', 'set_show_date'),
+     'default':  True
+    },
+    {
+     'type':     'text',
+     'label':    'Date format',
+     'bind':     ('date_format', 'set_date_format'),
+     'default':  '%x'
+    },
+    {
+     'type':     'label',
+     'label':    'See http://www.php.net/strftime\nfor help about the format string'
+    }
+]
+
+
 from foopanel.lib import abstract
 import gtk, gobject
 import time
 
 
 class Plugin(abstract.AbstractPlugin):
+    
+    __format_time = "%X"
+    __format_date = "%x"
 
-    def __init__(self, settings):
+    def __init__(self):
         
         abstract.AbstractPlugin.__init__(self)
     
@@ -72,8 +107,8 @@ class Plugin(abstract.AbstractPlugin):
     
         try:
             now = time.localtime()
-            ctime = "<span size=\"larger\" weight=\"bold\">%s</span>" % time.strftime("%X", now)
-            cdate = time.strftime("%x", now)
+            ctime = "<span size=\"larger\" weight=\"bold\">%s</span>" % time.strftime(self.__format_time, now)
+            cdate = time.strftime(self.__format_date, now)
             
             self.label_time.set_markup(ctime)
             self.label_date.set_text(cdate)
@@ -82,4 +117,18 @@ class Plugin(abstract.AbstractPlugin):
             pass
         
         return True
+    
+    def set_show_time(self, show): 
+        if show: self.label_time.show()
+        else: self.label_time.hide()
+        
+    def set_show_date(self, show): 
+        if show: self.label_date.show()
+        else: self.label_date.hide()
+        
+    def set_time_format(self, format):
+        self.__format_time = format
+    
+    def set_date_format(self, format):
+        self.__format_date = format
 

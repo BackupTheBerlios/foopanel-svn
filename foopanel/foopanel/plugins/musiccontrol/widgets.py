@@ -79,7 +79,7 @@ class ScrollingLabel(gtk.Label):
     def set_text(self, label):
         
         l = self.get_layout()
-        l.set_markup(label)
+        l.set_text(label)
         
         w, h = l.get_pixel_size()
         

@@ -26,9 +26,22 @@ authors = ["Federico Pelloni <federico.pelloni@gmail.com>"]
 copyright = "Copyright (C) 2006, Federico Pelloni"
 requires = {}
 
+try: 
+    default_term = os.environ["TERMCMD"]
+except:
+    try:
+        default_term = os.environ["TERM"]
+    except:
+        default_term = "xterm"
+
 config_scheme = [
     # Option type        Option labe                Bind    config opt  Plugin.callback
-    { 'type': 'text', 'label': 'Mixer command', 'bind': ( 'mixer', 'set_mixer_cmd' ) }
+    { 
+      'type': 'text', 
+      'label': 'Mixer command', 
+      'bind': ( 'mixer', 'set_mixer_cmd' ),
+      'default': '%s -e alsamixer' % default_term
+    }
 ]
 
 
@@ -39,24 +52,9 @@ import os, ossaudiodev
 
 class Plugin(abstract.AbstractPlugin):
     
-    def __init__(self, settings):
+    def __init__(self):
         
         abstract.AbstractPlugin.__init__(self)
-        
-        default_mixer = "alsamixer"
-        
-        try:
-            self.mixer_cmd = settings.mixer
-        except:
-            try:
-                term = os.environ["TERMCMD"]
-            except:
-                try:
-                    term = os.environ["TERM"]
-                except:
-                    term = "xterm"
-            self.mixer_cmd = "%s -e %s" % (term, default_mixer)
-            settings.mixer = self.mixer_cmd
         
         box = gtk.HBox(False, 0)
         self.add(box)

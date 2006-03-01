@@ -25,27 +25,27 @@
 import gtk
 import gettext
 import string
-import config, lib.core, lib.globals, lib.functions
+from lib import config, core, globals, functions
 
 
 def run():
 
     gettext.install("foopanel")
     
-    lib.globals.config = config.FooConfig()
+    globals.config = config.FooConfig()
 
     theme = lib.globals.config.theme
     if theme != "None":
-        lib.functions.load_theme(theme)
+        functions.load_theme(theme)
         
-    lib.globals.tooltips = gtk.Tooltips()
-    lib.globals.tooltips.enable()
+    globals.tooltips = gtk.Tooltips()
+    globals.tooltips.enable()
         
-    gui = lib.core.Gui()
+    gui = core.Gui()
     
-    lib.globals.config.gui = lib.core.ConfDialog()
+    globals.config.gui = core.ConfDialog()
 
-    plugin_manager = lib.core.PluginManager()
+    plugin_manager = core.PluginManager()
 
     gui.add(plugin_manager)
     

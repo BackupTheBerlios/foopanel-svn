@@ -22,7 +22,7 @@
 
 
 
-import globals
+import globals, dconfig
 import sys, os.path
 import gtk
 
@@ -55,8 +55,7 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
             errmsg = _("It requires packages: %s") % string.join(not_satisfied, ", ")
             raise
         
-        plugwidget = plugin.Plugin(settings)
-        plugwidget.show()
+        plugwidget = plugin.Plugin()
         #plug.build()
         
         expand = getattr(plugin, "expand", False)
@@ -77,6 +76,8 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
                                   widget    = plugwidget, 
                                   settings  = settings)
         
+        dconfig.DConfigLoad(pobject)
+        
         if position > -1:
             globals.plugin_manager.reorder_child(plug, position)
             globals.plugins.insert(position, pobject)
@@ -91,6 +92,8 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
         
         if globals.config.debug:
             print _("Plugin '%s' %s") % (plugin.name, s)
+            
+        pobject.widget.show()
             
         return pobject
         

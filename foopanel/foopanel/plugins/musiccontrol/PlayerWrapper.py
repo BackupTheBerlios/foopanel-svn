@@ -32,22 +32,20 @@ class AbstractPlayerWrapper(gtk.HBox):
 
 
     __paused = False
+    __show_cover = False
     
-
     def __init__(self):
         
         gtk.HBox.__init__(self, False, 3)
         
-        self.set_size_request(int(globals.height) + 100, 0)
-        
         self.coverimg = gtk.Image()
         w = int(globals.height) - 6
         self.coverimg.set_size_request(w, w)
-        al = gtk.Alignment(0.5, 0.5)
-        al.show()
+        self.coverbox = gtk.Alignment(0.5, 0.5)
+        self.coverbox.show()
         self.coverimg.show()
-        self.add(al)
-        al.add(self.coverimg)
+        self.add(self.coverbox)
+        self.coverbox.add(self.coverimg)
         
         box = gtk.VBox(False, 5)
         box.show()
@@ -107,6 +105,7 @@ class AbstractPlayerWrapper(gtk.HBox):
         self._curr_scroll = None
         self._scroll_count = 0
         
+        self.set_show_cover(False)
         self.set_cover()
         
         self._on_update_functions = [ self._scroll_title ]
@@ -164,9 +163,23 @@ class AbstractPlayerWrapper(gtk.HBox):
         self.play_img.set_from_stock(icon, gtk.ICON_SIZE_BUTTON)
     
     
+    def set_show_cover(self, show):
+        
+        self.__show_cover = show
+        if show:
+            self.coverbox.show()
+            self.set_size_request(int(globals.height) + 100, 0)
+        else:
+            self.coverbox.hide()
+            self.set_size_request(100, 0)
+        
+        
 
     def set_cover(self, c = False):
-    
+        
+        if not self.__show_cover:
+            return
+        
         if not c:
             c = os.path.join(os.path.dirname(__file__), "icon.png")
         try:

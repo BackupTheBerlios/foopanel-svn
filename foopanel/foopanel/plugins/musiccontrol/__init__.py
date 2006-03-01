@@ -28,27 +28,65 @@ requires = {}
 copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
 
 
+config_scheme = [
+   # Player wrapper
+    { 
+      'type': 'dropdown', 
+      'label': 'Music player', 
+      'bind': ( 'player', 'set_player' ),
+      'options': [('quodlibet', 'QuodLibet')],
+      'default': 'quodlibet'
+    },
+    # Show cover
+    {
+      'type':    'boolean',
+      'label':   'Show album cover (if supported)',
+      'bind':    ('show_cover', 'set_show_cover'),
+      'default': True
+    }
+]
+
+
 from foopanel.lib import abstract, globals
 import os.path
 
 class Plugin(abstract.AbstractPlugin):
     
-    def __init__(self, settings):
+    __loaded_player = None
+    __loaded_widget = None
+    
+    __show_cover = False
+    
+    def __init__(self):
         
         abstract.AbstractPlugin.__init__(self)
         
-        self.__settings = settings
         
-        try:
-            player = str(self.__settings.player)
-        except:
-            player = "quodlibet"
+    
+    def set_player(self, player):
         
+        if self.__loaded_widget is not None:
+            self.remove(self.__loaded_widget)
+            self.__loaded_widget = None
+        
+        if self.__loaded_player is not None:
+            self.__loaded_player = None
+        
+        if player is None or player == "None":
+            return
+            
         exec("from %s_wrapper import Wrapper" % player)
-        w = Wrapper()
+        self.__loaded_player = Wrapper
+        w = self.__loaded_player()
         w.show_all()
-        
         self.add(w)
         
+        self.__loaded_widget = w
+    
+    
+    def set_show_cover(self, show):
+        
+        self.__loaded_widget.set_show_cover(show)
+            
 
 

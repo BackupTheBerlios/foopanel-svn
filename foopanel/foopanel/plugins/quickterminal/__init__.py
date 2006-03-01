@@ -86,7 +86,7 @@ class TerminalWindow(abstract.PopupWindow):
 
 class Plugin(abstract.AbstractPlugin):
 
-    def __init__(self, settings):
+    def __init__(self):
         
         abstract.AbstractPlugin.__init__(self)
 

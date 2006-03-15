@@ -1,0 +1,16 @@
+<config>
+	<settings>
+		<height>60</height>
+		<hposition>center</hposition>
+		<vposition>bottom</vposition>
+		<ontop>True</ontop>
+		<theme>SolidBlue</theme>
+		<debug>False</debug>
+		<width>100</width>
+	</settings>
+	<plugins>
+		<plugin name="menu" />
+		<plugin name="flexible_space" />
+		<plugin name="clock" />
+	</plugins>
+</config>

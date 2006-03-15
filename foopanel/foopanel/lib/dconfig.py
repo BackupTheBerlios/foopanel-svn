@@ -26,8 +26,8 @@ import globals
 ### ABSTRACT OPTION
 class og:
     
-    def format(self, value): return value
-    def unformat(self, value): return value
+    def __format(self, value): return value
+    def __unformat(self, value): return value
     def get(self): return None
     def set(self, value): pass
     def build(self): 
@@ -39,7 +39,12 @@ class og:
         self.obj.add(w)
         return w
     
-    def __init__(self, plugin, option):
+    def __init__(self): pass
+    
+    format = classmethod(__format)
+    unformat = classmethod(__unformat)
+    
+    def initialize(self, plugin, option):
         self.plugin = plugin
         self.option = option
         self.w = self.build()
@@ -55,8 +60,13 @@ class og:
         
     def save(self, *args):
         value = self.get()
-        setattr(self.plugin.settings, self.option['bind'][0], self.format(value))
-        getattr(self.plugin.widget, self.option['bind'][1])(self.unformat(value))
+        try:
+            # Set value in config
+            setattr(self.plugin.settings, self.option['bind'][0], self.format(value))
+            # Execute callback on widget
+            getattr(self.plugin.widget, self.option['bind'][1])(self.unformat(value))
+        except:
+            raise
         
     def get_widget(self):
         return self.obj
@@ -75,8 +85,8 @@ class option_boolean(og):
     widget = gtk.CheckButton
     def get(self): return self.w.get_active()
     def set(self, value): self.w.set_active(value)
-    def format(self, value): return str(int(value))
-    def unformat(self, value): return bool(int(value))
+    def __format(self, value): return str(int(value))
+    def __unformat(self, value): return bool(int(value))
     
 ### OPTION TYPE: TEXT
 class option_text(og):
@@ -84,8 +94,8 @@ class option_text(og):
     widget = gtk.Entry
     def get(self): return self.w.get_text()
     def set(self, value): self.w.set_text(value)
-    def format(self, value): return str(value)
-    def unformat(self, value): return str(value)
+    def __format(self, value): return str(value) 
+    def __unformat(self, value): return str(value)
         
 ### OPTION TYPE: DROPDOWN
 class option_dropdown(og):
@@ -114,9 +124,36 @@ class option_dropdown(og):
             if row[0] == value:
                 self.w.set_active_iter(row.iter)
                 break
-    def format(self, value): return str(value)
-    def unformat(self, value): return str(value)
+    def __format(self, value): return str(value)
+    def __unformat(self, value): return str(value)
 
+### OPTION TYPE: RADIO
+class option_radio(og):
+    signal = "group-changed"
+    def build(self):
+        self.obj = gtk.HBox(False, 5)
+        l = gtk.Label(self.option['label']+":")
+        l.props.xalign = 0
+        self.obj.add(l)
+        box = gtk.HBox(True, 2)
+        self.__btns = {}
+        grp = None
+        for o in self.option['options']:
+            b = gtk.RadioButton(grp, o[1])
+            if grp is None: grp = b
+            self.__btns[o[0]] = b
+            box.add(b)
+        self.obj.add(box)
+        return grp
+    def get(self):
+        for o, w in self.__btns.iteritems():
+            if w.get_active():
+                return o
+                break
+    def set(self, value):
+        self.__btns[value].set_active(True)
+    def __format(self, value): return str(value)
+    def __unformat(self, value): return str(value)
 
 
 
@@ -157,7 +194,8 @@ class DConfig(gtk.Dialog):
     
     def __new_setting(self, option):
 
-        exec("s = option_%s(self.plugin, option)" % option['type'])
+        exec("s = option_%s()" % option['type'])
+        s.initialize(self.plugin, option)
         self.vbox.pack_start(s.get_widget(), False)
         
         
@@ -180,9 +218,10 @@ def DConfigLoad(plugin):
         try:
             value = getattr(settings, option['bind'][0])
             # Unformat the value from settings file (XML) to Python value
-            exec("value = option_%s.unformat(None, value)" % option['type'])
+            exec("o = option_%s" % option['type'])
+            value = o.unformat(value)
         # Otherwise use default value
-        except:
+        except AttributeError:
             try:
                 value = option['default']
             except:

@@ -21,6 +21,16 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
+import sys
+import os.path
+
+up = os.path.join(os.path.dirname(__file__), "..")
+
+if os.path.exists(os.path.realpath(os.path.join(up, "setup.py"))) and \
+   os.path.isdir(os.path.realpath(os.path.join(up, "foopanel"))):
+   
+    sys.path.insert(0, os.path.realpath(up))
+        
 
 import foopanel
 

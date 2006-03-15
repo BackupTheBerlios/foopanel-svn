@@ -41,10 +41,10 @@ config_scheme = [
 ]
 
 
-class Plugin(abstract.AbstractPlugin):
+class Plugin(abstract.Plugin):
     def __init__(self):
         
-        abstract.AbstractPlugin.__init__(self)
+        abstract.Plugin.__init__(self)
         
         self.mem = Memory()
         self.add(self.mem)

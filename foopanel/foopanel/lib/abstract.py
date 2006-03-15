@@ -26,7 +26,7 @@ from foopanel.lib import globals
 import os.path
 
 
-class Plugin:
+class PluginObject:
     
     name = None
     module = None
@@ -36,17 +36,21 @@ class Plugin:
     def __init__(self, **kwargs):
         
         self.__dict__.update(kwargs)
+        self.widget.settings = self.settings
         
 
 
-class AbstractPlugin(gtk.HBox):
+class Plugin(gtk.HBox):
+    
+    settings = None
 
     def __init__(self):
     
         gtk.HBox.__init__(self, False, 3)
         
         self.show()
-            
+        
+        
             
 
 

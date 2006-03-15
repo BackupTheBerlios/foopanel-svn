@@ -35,11 +35,11 @@ import gtk, gobject
 import time
 
 
-class Plugin(abstract.AbstractPlugin):
+class Plugin(abstract.Plugin):
 
     def __init__(self):
     
-        abstract.AbstractPlugin.__init__(self)
+        abstract.Plugin.__init__(self)
         
         sep = gtk.VSeparator()
         sep.show()

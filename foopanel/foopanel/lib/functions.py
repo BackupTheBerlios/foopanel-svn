@@ -28,15 +28,13 @@ import gtk
 
 import abstract
 
-sys.path.append(os.path.realpath(os.path.join(globals.paths.plugins, "..")))
-
 
 def load_plugin(p, settings = None, reload_module = False, position = -1):
 
     errmsg = None
         
     try:
-    
+        
         if reload_module:
             reload(reload_module)
             plugin = reload_module
@@ -71,10 +69,10 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
         #gtk.threads_enter()
         globals.plugin_manager.pack_start(plugwidget, expand, expand)
         
-        pobject = abstract.Plugin(name      = plugin.name, 
-                                  module    = plugin, 
-                                  widget    = plugwidget, 
-                                  settings  = settings)
+        pobject = abstract.PluginObject(name      = plugin.name, 
+                                        module    = plugin, 
+                                        widget    = plugwidget, 
+                                        settings  = settings)
         
         dconfig.DConfigLoad(pobject)
         
@@ -162,8 +160,17 @@ def load_theme(theme):
     try:
         if globals.config.debug:
             print _("Loading theme %s") % theme
-        path = os.path.join(globals.paths.themes, theme, "gtkrc")
-        if not os.path.isfile(path):
+        path = None
+        for p in globals.paths.themes:
+            try:
+                path = os.path.join(p, theme, "gtkrc")
+                if os.path.isfile(path):
+                    break
+                else:
+                    path = None
+            except:
+                path = None
+        if path is None or not os.path.isfile(path):
             raise
         gtk.rc_reset_styles(gtk.settings_get_default())
         gtk.rc_parse(path)

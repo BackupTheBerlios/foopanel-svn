@@ -1,3 +1,19 @@
+2006-03-14  Federico Pelloni  <federico.pelloni@gmail.com>
+
+    * General enhancements to make Foopanel installable
+	* setup.py: Introduced setup system, seems workin
+
+2006-03-05  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/lib/abstract.py: changed Plugin to PluginObject and AbstractPlugin to Plugin
+							    added a hook to Plugin to get settings object
+	* foopanel/plugins/*/__init__.py: changed abstract.AbstractPlugin to abstract.Plugin
+	* foopanel/lib/dconfig.py: fixed unformatting when loading from config.xml
+
+2006-03-03  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/plugins/flexible_space/__init__.py: delete unneeded "import time"
+
 2006-03-01  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/plugins/*/__init__.py: fixed to support automatic settings loading

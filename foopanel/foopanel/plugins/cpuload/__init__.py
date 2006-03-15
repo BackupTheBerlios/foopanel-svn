@@ -41,7 +41,7 @@ config_scheme = [
 ]
 
 
-class Plugin( abstract.AbstractPlugin ):
+class Plugin( abstract.Plugin ):
     
     name = "cpu"
     file = "/proc/stat"
@@ -51,7 +51,7 @@ class Plugin( abstract.AbstractPlugin ):
         
     def __init__( self ):
         
-        abstract.AbstractPlugin.__init__( self )
+        abstract.Plugin.__init__( self )
         
         self.eb = gtk.EventBox()
         self.bar = gtk.ProgressBar()

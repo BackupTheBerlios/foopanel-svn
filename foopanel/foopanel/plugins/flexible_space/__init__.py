@@ -32,14 +32,13 @@ expand = True
 
 from foopanel.lib import abstract
 import gtk, gobject
-import time
 
 
-class Plugin(abstract.AbstractPlugin):
+class Plugin(abstract.Plugin):
 
     def __init__(self):
         
-        abstract.AbstractPlugin.__init__(self)
+        abstract.Plugin.__init__(self)
         
         # This is an incredibly simple plugins
         # It is just an empty container packed to expand in the PluginManager

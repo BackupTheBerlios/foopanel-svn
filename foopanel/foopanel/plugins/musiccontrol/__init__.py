@@ -50,7 +50,7 @@ config_scheme = [
 from foopanel.lib import abstract, globals
 import os.path
 
-class Plugin(abstract.AbstractPlugin):
+class Plugin(abstract.Plugin):
     
     __loaded_player = None
     __loaded_widget = None
@@ -59,7 +59,7 @@ class Plugin(abstract.AbstractPlugin):
     
     def __init__(self):
         
-        abstract.AbstractPlugin.__init__(self)
+        abstract.Plugin.__init__(self)
         
         
     

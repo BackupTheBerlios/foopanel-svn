@@ -1,0 +1,4 @@
+include ChangeLog COPYING
+recursive-include foopanel/themes *
+include foopanel/config.xml.in
+include foopanel/lib/*.glade

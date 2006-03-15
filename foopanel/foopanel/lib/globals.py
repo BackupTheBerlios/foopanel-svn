@@ -25,7 +25,7 @@
 
 class app:
     name = "Foopanel"
-    version = "0.0.2"
+    version = "0.1.0"
     copyright = "Copyright (C) 2005 - 2006, Federico Pelloni"
     comments = "A powerful themable and extensible panel for your desktop"
     #license = "GNU Public License version 2 or higher"
@@ -36,14 +36,21 @@ class app:
 
 
 # Some paths
-import os.path
+from os.path import realpath, expanduser, join, dirname
 class paths:
-    themes = os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "themes"))
-    plugins = os.path.realpath(os.path.join(os.path.dirname(__file__), "..", "plugins"))
+    lib = realpath(dirname(__file__))
+    base = realpath(join(lib, ".."))
+    user = expanduser("~/.foopanel")
+    themes = [realpath(join(base, "themes")),
+              expanduser("~/.foopanel/themes")]
+    plugins = [realpath(join(base, "plugins")),
+              expanduser("~/.foopanel/plugins")]
 
 
 # Here I store some variables and constants used in various parts of Foopanel
 # Just initialize them to avoid checking if they exist
+
+localrun = None
 
 window = None
 plugins = []

@@ -33,10 +33,6 @@ import sys, os.path, string
 
 
 
-path_here = os.path.dirname( __file__ )
-pluginpath = os.path.realpath( os.path.join( path_here, "..", "plugins" ) )
-
-
 #class PluginLoader(threading.Thread):
 #    
 #    def __init__(self):
@@ -263,7 +259,7 @@ class FooMenu( gtk.ToggleButton ):
         self.show()
 
 
-
+path_here = os.path.dirname(__file__)
 
 class ConfDialog:
     
@@ -436,7 +432,7 @@ class ConfDialog:
         def cb_plugin_settings( btn ):
             try: plugin = sel_get_plugin()
             except: return
-            d = dconfig.DConfig(plugin)
+            d = dconfig.DConfig( plugin )
             d.show_all()
             response = d.run()
             d.destroy()
@@ -547,11 +543,16 @@ class ConfDialog:
     
     def __parse_plugin( self, t ):
         
-        d = os.path.join( pluginpath, t )
+        status = False
+        
+        for p in globals.paths.plugins:
+            d = os.path.join( p, t )
 
-        if not os.path.isdir( d ):
-            return False
-        if not "__init__.py" in os.listdir( d ):
+            if os.path.isdir( d ) and "__init__.py" in os.listdir( d ):
+                status = True
+                break
+            
+        if not status:
             return False
         
         try:
@@ -574,9 +575,9 @@ class ConfDialog:
         
         self.__addplmodel.clear()
         
-        for t in sorted(os.listdir( pluginpath )):
-        
-            self.__parse_plugin( t )
+        for path in globals.paths.plugins:
+            for t in sorted( os.listdir( path ) ):
+                self.__parse_plugin( t )
         
         
         

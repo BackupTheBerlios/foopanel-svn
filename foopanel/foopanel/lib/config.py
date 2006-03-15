@@ -19,12 +19,13 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-storage = "foopanel/config.xml"
 
-import globals
 from elementtree import ElementTree
 import gtk, gtk.glade
-import os, os.path
+import sys, os, os.path, shutil
+import globals
+
+storage = os.path.expanduser(os.path.join(globals.paths.user, "config.xml"))
 
 
 
@@ -137,6 +138,13 @@ class FooConfig:
     reserved = ['_FooConfig__reserved', '_FooConfig__xml', 'plugins', 'gui']
 
     def __init__( self ):
+        
+        if not os.path.exists(storage):
+            try:
+                shutil.copy(os.path.join(globals.paths.base, "config.xml.in"), storage)
+            except:
+                print _("Error: Unable to create initial config file (%s)") % storage
+                sys.exit(2)
         
         self.__xml = ElementTree.parse( os.path.realpath( storage ) )
         #self.__xml = xml.getroot()

@@ -50,11 +50,11 @@ import gtk, gobject
 import os, ossaudiodev
 
 
-class Plugin(abstract.AbstractPlugin):
+class Plugin(abstract.Plugin):
     
     def __init__(self):
         
-        abstract.AbstractPlugin.__init__(self)
+        abstract.Plugin.__init__(self)
         
         box = gtk.HBox(False, 0)
         self.add(box)

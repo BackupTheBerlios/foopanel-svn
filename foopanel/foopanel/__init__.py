@@ -27,8 +27,48 @@ import gettext
 import string
 from lib import config, core, globals, functions
 
+import sys, os, os.path
+
+here = os.path.dirname(__file__)
+
+if os.path.exists(os.path.realpath(os.path.join(here, "..", "setup.py"))) and \
+   os.path.isdir(os.path.realpath(os.path.join(here, "..", "foopanel"))):
+   
+    globals.localrun = True
+    globals.paths.plugins = [os.path.join(here, "plugins")]
+    globals.paths.themes  = [os.path.join(here, "themes")]
+        
+else:
+
+    globals.localrun = False
+    
+
+for p in globals.paths.plugins:
+    sys.path.insert(0, os.path.realpath(os.path.join(p, "..")))
 
 def run():
+    
+    if not os.path.isdir(globals.paths.user):
+        try:
+            os.mkdir(globals.paths.user)
+        except:
+            print _("Error: Unable to create personal directory (~/.foopanel)")
+            sys.exit(2)
+            
+    personal_theme_dir = os.path.join(globals.paths.user, "themes")
+    if not os.path.isdir(personal_theme_dir):
+        try:
+            os.mkdir(personal_theme_dir)
+        except:
+            pass
+    
+    personal_plugin_dir = os.path.join(globals.paths.user, "plugins")
+    if not os.path.isdir(personal_plugin_dir):
+        try:
+            os.mkdir(personal_plugin_dir)
+        except:
+            pass
+    
 
     gettext.install("foopanel")
     

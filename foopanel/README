@@ -21,11 +21,27 @@
 
 == Info ==
 
-Development version 0.0.2: quite incomplete, but working release
+Version 0.1.0: hopefully installable, runnable and usable
 
+Various plugins bundled: 
+  - Clock
+  - CPULoad
+  - Flexible space
+  - MemInfo
+  - Menu
+  - MusicControl
+  - Pager
+  - QuickTerminal
+  - Separator
+  - VolumeControl
+
+Themes included:
+  - SolidBlue
 
 == Help ==
 
-Currently no installation, just run "./foopanel.py" right here.
-
-Configuration in "./foopanel/config.py"
+To install Foopanel, just run from a root shell:
+  python setup.py install
+  
+Then, to run it, simply type "foopanel" in a shell.
+  

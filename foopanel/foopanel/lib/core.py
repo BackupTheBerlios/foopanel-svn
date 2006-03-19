@@ -112,7 +112,7 @@ class Gui( abstract.FoopanelWindow ):
         self.set_name( "FoopanelWindow" )
         self.resize()
         
-        self.set_keep_above( bool( globals.config.ontop ) )
+        self.set_keep_above( bool( int(globals.config.ontop) ) )
         
         globals.window = self
         

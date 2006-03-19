@@ -88,7 +88,7 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
         else:
             s = 'loaded'
         
-        if globals.config.debug:
+        if bool(int(globals.config.debug)):
             print _("Plugin '%s' %s") % (plugin.name, s)
             
         pobject.widget.show()
@@ -102,7 +102,7 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
         if errmsg:
             print errmsg
             
-        if globals.config.debug:
+        if bool(int(globals.config.debug)):
             raise
 
 

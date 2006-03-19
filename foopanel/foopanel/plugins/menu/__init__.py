@@ -313,8 +313,11 @@ class Plugin(abstract.Plugin):
         
         
         for m in xdg.Menu.parse().getEntries():
-        
-            obj = menu(m)
+            
+            try:
+                obj = menu(m)
+            except:
+                continue
             obj.connect("toggled", obj.items.toggle)
             obj.connect("enter-notify-event", self.manage_mouse_in)
             obj.connect("leave-notify-event", self.manage_mouse_out)

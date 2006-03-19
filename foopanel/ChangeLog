@@ -1,3 +1,9 @@
+2006-03-19  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/lib/core.py: some fixes to use properly globals.config.ontop
+	* foopanel/lib/functions.py: some fixes to use properly globals.config.debug
+	* foopanel/plugins/menu/__init__.py: fixed small bug to handle separators
+
 2006-03-14  Federico Pelloni  <federico.pelloni@gmail.com>
 
     * General enhancements to make Foopanel installable

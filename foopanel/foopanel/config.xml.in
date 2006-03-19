@@ -3,9 +3,9 @@
 		<height>60</height>
 		<hposition>center</hposition>
 		<vposition>bottom</vposition>
-		<ontop>True</ontop>
+		<ontop>1</ontop>
 		<theme>SolidBlue</theme>
-		<debug>False</debug>
+		<debug>0</debug>
 		<width>100</width>
 	</settings>
 	<plugins>

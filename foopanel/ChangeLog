@@ -1,3 +1,7 @@
+2006-04-23  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/lib/config.py: Fixed boolean value saving
+
 2006-03-19  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/lib/core.py: some fixes to use properly globals.config.ontop

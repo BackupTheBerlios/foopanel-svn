@@ -55,7 +55,7 @@ class PluginSettings:
             
         try:
             item = self.xmlnode.find( key )
-            
+            if isinstance(value, bool): value = int(value)
             try:
                 item.text = str( value )
             except:

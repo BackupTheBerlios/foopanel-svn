@@ -30,7 +30,6 @@ import os.path
 
 class AbstractPlayerWrapper(gtk.HBox):
 
-
     __paused = False
     __show_cover = False
     
@@ -60,11 +59,9 @@ class AbstractPlayerWrapper(gtk.HBox):
         box.add(btn_track)
         
         self.track_label = widgets.ScrollingLabel(_("Music player"))
-        #self.track_label = gtk.Label(_("Music player"))
         self.track_label.show()
         btn_track.add(self.track_label)
         
-      
         btnbox = gtk.HBox(False, 2)
         btnbox.show()
         box.add(btnbox)
@@ -99,72 +96,36 @@ class AbstractPlayerWrapper(gtk.HBox):
         btn_next.connect("clicked", lambda w: self.next())
         btnbox.pack_start(btn_next, False, False)
         
-        self._curr_title = None
-        self._pango_layout = self.track_label.get_layout()
-        self._title_scroll = False
-        self._curr_scroll = None
-        self._scroll_count = 0
-        
         self.set_show_cover(False)
         self.set_cover()
         
-        self._on_update_functions = [ self._scroll_title ]
+        self._on_update_functions = []
                
         self.update()
         gobject.timeout_add(1000, self.update)
-    
-    
+        
     
     def register_update_function(self, function):
-    
         self._on_update_functions.append(function)
-    
-    
+        
     
     def update(self):
         """ Per-second update function """
-    
         for f in self._on_update_functions:
-        
-            try:
-                f()
-            except KeyboardInterrupt:
-                continue
-                
+            try: f()
+            except KeyboardInterrupt: continue
         return True
-        
-    
-    
-    def previous(self):
-        pass
-        
-    def play_pause(self):
-        pass
-    
-    def next(self):
-        pass
-        
-    def focus(self):
-        pass
-
     
     
     def set_paused(self, paused = True):
-    
         self.__paused = paused
-        
-        self.track_label._scrolling = not paused
-    
-        if paused:
-            icon = gtk.STOCK_MEDIA_PLAY
-        else:
-            icon = gtk.STOCK_MEDIA_PAUSE
-        
+        self.track_label.set_scrolling(not paused)
+        if paused: icon = gtk.STOCK_MEDIA_PLAY
+        else: icon = gtk.STOCK_MEDIA_PAUSE
         self.play_img.set_from_stock(icon, gtk.ICON_SIZE_BUTTON)
     
     
     def set_show_cover(self, show):
-        
         self.__show_cover = show
         if show:
             self.coverbox.show()
@@ -172,14 +133,11 @@ class AbstractPlayerWrapper(gtk.HBox):
         else:
             self.coverbox.hide()
             self.set_size_request(100, 0)
-        
-        
-
+    
+    
     def set_cover(self, c = False):
-        
         if not self.__show_cover:
             return
-        
         if not c:
             c = os.path.join(os.path.dirname(__file__), "icon.png")
         try:
@@ -188,59 +146,28 @@ class AbstractPlayerWrapper(gtk.HBox):
             self.coverimg.set_from_pixbuf(cover)
         except:
             pass
-
     
-        
         
     def set_title(self, artist = None, title = None):
         """ Title manager function """
-        
         if artist == None and title == None:
-        
-            self._title_scroll = False
-            self._scroll_count = 0
-            self._curr_title = None
-            self._curr_scroll = None
-            self._curr_song = None
             title = _("Music player")
-            
         else:
-        
             title = artist + " - " + title
-
-            if title != self._curr_title:
-                
-                self._title_scroll = False
-                self._pango_layout.set_text(title)
-
-                if self._pango_layout.get_pixel_size()[0] > \
-                   self.track_label.allocation.width:
-
-                    self._title_scroll = True
-                    self._curr_scroll = " " + title + "  *** "
-                    self._scroll_count = 0
-
-            self._curr_song = title
-            
         self.track_label.set_label(title)
         
-        
+	
+	### These methods are to be overridden by each wrapper
+    def previous(self):
+        pass
+    def play_pause(self):
+        pass
+    def next(self):
+        pass
+    def focus(self):
+        pass
     
-    def _scroll_title(self):
-        """ Scroll title routine """
-        
-        return
-        
-        if self._title_scroll and not self.__paused:
-        
-            self._scroll_count += 1
-        
-            if self._scroll_count > 3:
-            
-                x = 1
-                title = self._curr_scroll[x:] + self._curr_scroll[:x]
-                self._curr_scroll = title
-                self.btn_track.set_label(title)
+    
         
             
     

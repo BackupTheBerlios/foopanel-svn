@@ -101,7 +101,7 @@ class Plugin(abstract.Plugin):
         box = gtk.VBox(False, 2)
         btn.add(box)
 
-        img = gtk.image_new_from_icon_name("terminal", gtk.ICON_SIZE_BUTTON)
+        img = gtk.image_new_from_icon_name("gnome-terminal", gtk.ICON_SIZE_BUTTON)
         box.add(img)
 
         lbl = gtk.Label(_("Terminal"))

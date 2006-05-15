@@ -58,6 +58,8 @@ class Plugin(abstract.Plugin):
         
         al = gtk.Alignment(0.5, 0.5, 0, 0)
         al.show()
+        
+        self.connect("scroll-event", self.__cb_scroll)
 
         self.add(al)
         al.add(self.pager)
@@ -82,7 +84,21 @@ class Plugin(abstract.Plugin):
         
         self.pager.set_size_request(width, height)
         self.pager.set_n_rows(rows)
-        
+       
+    
+    def __cb_scroll(self, widget, event):
+    	
+    	ws = self.screen.get_active_workspace()
+    	n = ws.get_number()
+    	wc = self.screen.get_workspace_count()
+    	
+    	if event.direction == gtk.gdk.SCROLL_UP:
+    		d = max(0, n-1)
+    	elif event.direction == gtk.gdk.SCROLL_DOWN:
+    		d = min(wc-1, n+1)
+    	
+    	new = self.screen.get_workspace(d)
+    	new.activate(event.time)
         
         
         

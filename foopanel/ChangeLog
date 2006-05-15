@@ -1,3 +1,13 @@
+2006-05-15  Federico Pelloni  <federico.pelloni@gmail.com>
+
+	* foopanel/plugins/quickterminal/__init__.py: fixed icon name
+	* foopanel/plugins/musiccontrol/quodlibet_dbus_wrapper.py: new wrapper using my
+															   QuodLibet DBus plugin
+	* foopanel/plugins/musiccontrol/widgets.py: new ScrollingLabel, now pixel-by-pixel
+	* foopanel/plugins/musiccontrol/PlayerWrapper.py: removed and fixed something
+	* foopanel/lib/functions.py: more precise debug output when loading plugins
+	* foopanel/plugins/pager/__init__.py: added scroll-to-change-workspace feature
+
 2006-04-23  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/lib/config.py: Fixed boolean value saving

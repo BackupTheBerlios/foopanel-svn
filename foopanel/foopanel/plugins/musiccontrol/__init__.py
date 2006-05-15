@@ -34,7 +34,7 @@ config_scheme = [
       'type': 'dropdown', 
       'label': 'Music player', 
       'bind': ( 'player', 'set_player' ),
-      'options': [('quodlibet', 'QuodLibet')],
+      'options': [('quodlibet', 'QuodLibet'), ('quodlibet_dbus', 'QuodLibet (through DBus)')],
       'default': 'quodlibet'
     },
     # Show cover

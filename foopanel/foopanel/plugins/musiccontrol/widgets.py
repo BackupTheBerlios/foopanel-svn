@@ -20,100 +20,72 @@
 # Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA 02111-1307, USA.
 #
 
-###############
-#
-# NOTE: this could be done much better, by making the text scroll pixel-by-pixel
-#       instead of char-by-char, but it is much more difficult and I couldn't 
-#       get a solution to make it work without clearing the background (thus
-#       making it writing white on white with SolidBlue theme and clear GTK+
-#       themes).
-#       However I can provide the code I wrote, if anybody is interested in
-#       looking further at this.
-#
-###############
 
 import gtk, gobject
 import pango
 
 
 class ScrollingLabel(gtk.Label):
-
-    #__gsignals__ = { 'expose_event': 'override' }
-    
-    #_curr_x = 0
-    _scrolling = True
-    _to_scroll = False
-
-
-    def __init__(self, string = None, speed = 0.1):
-    
-        gtk.Label.__init__(self, "")
-        
-        self.set_text(string)
-        
-        gobject.timeout_add(int(50 / speed), self.draw)
-
-    
-    
-    def start_scrolling(self):
-    
-        self._scrolling = True
-    
-    
-    def stop_scrolling(self):
-    
-        self._scrolling = False
-        
-    
-    
-    def set_markup(self, markup):
-    
-        self.set_text(markup)
-    
-    
-    def set_label(self, label):
-    
-        self.set_text(label)
-    
-    
-    def set_text(self, label):
-        
-        l = self.get_layout()
-        l.set_text(label)
-        
-        w, h = l.get_pixel_size()
-        
-        rx, ry, rw, rh = self.allocation
-        
-        if w > rw:
-
-            gtk.Label.set_markup(self, label+" *** ")
-            self._to_scroll = True
-        
-        else:
-    
-            gtk.Label.set_markup(self, label)    
-            self._to_scroll = False
-        
-        
-        
-        
-    def draw(self):
-        
-        l = gtk.Label
-        
-        if self._to_scroll and self._scrolling:
-            
-            txt = l.get_text(self)[1:] + l.get_text(self)[:1]
-            l.set_text(self, txt)
-
-        return True
-        
-        
-        
-    #def do_expose_event(self, event):
-    #
-    #    #self.draw()
-    #    self.chain(event)
-        
-        
+	
+	_scrolling = True
+	_to_scroll = False
+	_x = 0
+	
+	def __init__(self, string = None, speed = 0.1):
+		gtk.Label.__init__(self, "")
+		self.set_text(string)
+		self.connect("expose-event", self.expose)
+		self.speed = speed
+	
+	def start_scrolling(self): 
+		self._scrolling = True
+		gobject.timeout_add(int(15/self.speed), self.redraw)
+	def stop_scrolling(self): self._scrolling = False
+	
+	def set_scrolling(self, scroll):
+		if scroll: self.start_scrolling()
+		else: self.stop_scrolling()	
+	
+	def set_markup(self, text): self.set_text(text)
+	def set_label(self, text): self.set_text(text)
+	
+	def set_text(self, label):
+		l = self.get_layout()
+		l.set_text(label)
+		w, h = l.get_pixel_size()
+		rx, ry, rw, rh = self.allocation
+		if w > rw:
+		    gtk.Label.set_markup(self, label+"  ***  ")
+		    self._to_scroll = True
+		else:
+		    gtk.Label.set_markup(self, label)    
+		    self._to_scroll = False
+	
+	def redraw(self):
+		self.queue_draw()
+		return self._scrolling
+		
+	def expose(self, widget, event):
+		self.context = widget.window.cairo_create()
+		self.event = event
+		self.context.rectangle(event.area.x, event.area.y,
+							   event.area.width, event.area.height)
+		self.context.clip()
+		self.draw(self.context)
+		return True
+	
+	def draw(self, c):
+		l = self.get_layout()
+		w, h = l.get_pixel_size()
+		if abs(self._x) >= w:
+			self._x = 0
+		x = self._x + self.event.area.x
+		y = self.event.area.y + int(float(self.event.area.height - h)/2)
+		c.set_source_color(self.style.fg[self.state])
+		c.move_to(x, y)
+		c.show_layout(l)
+		c.move_to(x + w, y)
+		c.show_layout(l)
+		if self._to_scroll and self._scrolling:
+			self._x -= 1
+		

@@ -38,8 +38,14 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
         if reload_module:
             reload(reload_module)
             plugin = reload_module
+            action_verb = 'Reloading'
         else:
             exec("import plugins.%s as plugin" % p)
+            action_verb = 'Loading'
+            
+        if bool(int(globals.config.debug)):
+            print _("%s '%s'...") % (action_verb, plugin.name)
+
         
         not_satisfied = []
                     
@@ -83,13 +89,8 @@ def load_plugin(p, settings = None, reload_module = False, position = -1):
             globals.plugins.append(pobject)
         #gtk.threads_leave()
         
-        if reload_module:
-            s = 'reloaded'
-        else:
-            s = 'loaded'
-        
         if bool(int(globals.config.debug)):
-            print _("Plugin '%s' %s") % (plugin.name, s)
+            print _("    ...done")
             
         pobject.widget.show()
             

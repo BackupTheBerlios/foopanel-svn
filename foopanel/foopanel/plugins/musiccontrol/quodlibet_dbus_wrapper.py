@@ -57,8 +57,10 @@ class Wrapper(AbstractPlayerWrapper):
 		self.control.connect_to_signal('SongStarted', self.__cb_song_start)
 		self.control.connect_to_signal('SongEnded', self.__cb_song_end)
 		
-		self.set_paused(self.control.GetPaused())
-		self.__parse_song(self.control.GetSong())
+		paused = self.control.GetPaused()
+		self.set_paused(paused)
+		song = self.control.GetSong()
+		self.__parse_song(song)
 		
 	
 	def __cb_song_end(self, skipped):

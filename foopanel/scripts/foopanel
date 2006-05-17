@@ -34,5 +34,15 @@ if os.path.exists(os.path.realpath(os.path.join(up, "setup.py"))) and \
 
 import foopanel
 
-foopanel.run()
+if __name__ == "__main__":
+	
+	try:
+		import psyco
+		print "Psyco loaded..."
+		psyco.log()
+		psyco.profile(0.05)
+	except ImportError:
+		print "No Psyco found."
+		
+	foopanel.run()
 

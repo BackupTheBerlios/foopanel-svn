@@ -1,3 +1,7 @@
+2006-05-17  Federico Pelloni  <federico.pelloni@gmail.com>
+	
+	* foopanel/plugins/menu/__init__.py: improved icon lookup procedure
+
 2006-05-15  Federico Pelloni  <federico.pelloni@gmail.com>
 
 	* foopanel/plugins/quickterminal/__init__.py: fixed icon name

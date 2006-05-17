@@ -39,6 +39,7 @@ import gtk, gtk.gdk
 import os, re
 
 
+theme = gtk.icon_theme_get_default()
 
 
 class FoopanelMenuWindow(abstract.PopupWindow):
@@ -117,15 +118,20 @@ class item(gtk.Button):
    
         image = gtk.Image()
         try:
-            pb = gtk.gdk.pixbuf_new_from_file_at_size(self.info.icon, 24, 24)
-            #w = pb.get_width()
-            #h = pb.get_height()
-            #if h != 24:
-            #    pb = pb.scale_simple(24, 24, gtk.gdk.INTERP_BILINEAR)
+            name = obj.getIcon()
+            if name[0] == '/' and os.path.exists(name):
+                pb = gtk.gdk.pixbuf_new_from_file_at_size(name, 24, 24)
+            else:
+                name = name.rsplit('.', 1)[0]
+                pb = theme.load_icon(name, 24, 0)
+            w = pb.get_width()
+            h = pb.get_height()
+            if h != 24:
+                pb = pb.scale_simple(24, 24, gtk.gdk.INTERP_BILINEAR)
             image.set_from_pixbuf(pb)
-        except:
+        except Exception, msg:
             image.set_from_stock(gtk.STOCK_EXECUTE, gtk.ICON_SIZE_LARGE_TOOLBAR)
-            image.set_pixel_size(24)
+   	    image.set_pixel_size(24)
             
         image.show()
         cont.pack_start(image, False, False)
